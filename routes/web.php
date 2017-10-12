@@ -13,4 +13,4 @@
 
 Route::view('/', 'welcome', ['title' => 'Hallux Productions Welcome']);
 
-Route::name('query')->get('/query', 'QueryController@run');
+Route::name('query')->match(['get', 'post'], '/query', 'QueryController@run');
