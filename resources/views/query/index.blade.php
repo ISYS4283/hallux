@@ -13,9 +13,10 @@
 @section('content')
     <h1>Query</h1>
 
-    <form method="post">
+    <form id="query" method="post">
         {{ csrf_field() }}
-        <textarea name="sql" rows="8" class="form-control">{{ $sql or '' }}</textarea>
+        <input type="hidden" name="sql">
+        <textarea id="sql" rows="8" class="form-control">{{ $sql or '-- write your query here' }}</textarea>
         <br>
         <button type="submit" class="btn btn-primary">Execute</button>
     </form>
@@ -46,8 +47,21 @@
 @endsection
 
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script>
+        var editor = ace.edit("sql");
+        editor.setOptions({
+            mode: "ace/mode/sql",
+            maxLines: Infinity,
+            fontSize: 18,
+        });
+        editor.renderer.setPadding(20);
+
+        $('#query').submit(function() {
+            $('#query input[name="sql"]').val(editor.getSession().getValue());
+        });
+
         $('.datatable').DataTable({
             "processing": true,
             "initComplete": function(settings, json) {
