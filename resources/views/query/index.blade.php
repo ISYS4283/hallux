@@ -52,7 +52,6 @@
 
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js" type="text/javascript" charset="utf-8"></script>
-    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script>
         var editor = ace.edit("sql");
         editor.setOptions({
@@ -60,8 +59,10 @@
             maxLines: Infinity,
             fontSize: 18,
         });
-        editor.renderer.setPadding(20);
+    </script>
 
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script>
         $('#query').submit(function() {
             $('#query input[name="sql"]').val(editor.getSession().getValue());
         });
