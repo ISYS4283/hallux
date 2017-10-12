@@ -78,6 +78,17 @@ return [
             'prefix' => '',
         ],
 
+        'hallux' => [
+            'driver' => 'sqlsrv',
+            'host' => 'essql1.walton.uark.edu',
+            'port' => '1433',
+            'database' => 'UA_HALLUX',
+            'username' => 'hallux_reader',
+            'password' => env('HALLUX_DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+        ],
+
     ],
 
     /*

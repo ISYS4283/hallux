@@ -14,7 +14,7 @@ class QueryController extends Controller
             $sql = $request->sql;
 
             try {
-                $rows = DB::select( DB::raw($sql) );
+                $rows = DB::connection('hallux')->select( DB::raw($sql) );
                 // limit to 1000 rows
                 $rows = array_slice($rows, 0, 1000);
             } catch (QueryException $e) {
