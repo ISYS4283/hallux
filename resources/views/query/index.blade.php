@@ -7,6 +7,9 @@
             display:block;
             margin:auto;
         }
+        thead tr {
+            background-color: white;
+        }
     </style>
 @endpush
 
