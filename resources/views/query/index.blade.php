@@ -15,7 +15,7 @@
 
     <form method="post">
         {{ csrf_field() }}
-        <textarea name="sql" rows="8" class="form-control"></textarea>
+        <textarea name="sql" rows="8" class="form-control">{{ $sql or '' }}</textarea>
         <br>
         <button type="submit" class="btn btn-primary">Execute</button>
     </form>

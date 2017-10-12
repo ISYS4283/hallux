@@ -10,11 +10,13 @@ class QueryController extends Controller
     public function run(Request $request)
     {
         if ($request->has('sql')) {
-            $rows = DB::select( DB::raw($request->sql) );
+            $sql = $request->sql;
+
+            $rows = DB::select( DB::raw($sql) );
 
             // limit to 1000 rows
             $rows = array_slice($rows, 0, 1000);
         }
-        return view('query.index', compact('rows'));
+        return view('query.index', compact('rows', 'sql'));
     }
 }
