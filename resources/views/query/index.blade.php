@@ -13,6 +13,10 @@
 @section('content')
     <h1>Query</h1>
 
+    @unless(empty($error))
+        <div class="alert alert-danger">{{ $error }}</div>
+    @endunless
+
     <form id="query" method="post">
         {{ csrf_field() }}
         <input type="hidden" name="sql">
