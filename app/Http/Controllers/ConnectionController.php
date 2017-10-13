@@ -29,7 +29,7 @@ class ConnectionController extends Controller
      */
     public function create()
     {
-        //
+        return view('connections.create');
     }
 
     /**
