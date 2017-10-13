@@ -30,4 +30,20 @@ class ConnectionTest extends TestCase
             ->assertSee($connection->config['host'])
         ;
     }
+
+    public function test_can_create_connection()
+    {
+        $connection = make(Connection::class);
+
+        $response = $this
+            ->post('/connections', $connection->toArray())
+            ->assertStatus(302)
+        ;
+
+        $this
+            ->get($response->headers->get('Location'))
+            ->assertSeeText($connection->name)
+            ->assertSeeText($connection->config['host'])
+        ;
+    }
 }

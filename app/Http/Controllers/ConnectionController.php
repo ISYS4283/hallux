@@ -40,7 +40,9 @@ class ConnectionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $connection = Connection::create($request->all());
+
+        return redirect(route('connections.show', $connection->name));
     }
 
     /**
