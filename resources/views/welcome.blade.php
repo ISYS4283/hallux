@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @push('head')
-    <meta name="description" content="Learn SQL by exploring the Hallux Productions synthetic dataset.">
+    <meta name="description" content="Test your SQL skills by querying datasets.">
 @endpush
 
 @section('content')
-    <h1>Welcome to Hallux Productions</h1>
+    <h1>Welcome to Query Quizzer</h1>
 
     <p class="lead">
         This is an SQL exploration environment for learning how to query a

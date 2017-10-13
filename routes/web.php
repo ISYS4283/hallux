@@ -11,7 +11,7 @@
 |
 */
 
-Route::view('/', 'welcome', ['title' => 'Hallux Productions Welcome']);
+Route::view('/', 'welcome', ['title' => 'Query Quizzer Welcome']);
 
 Route::name('query')->match(['get', 'post'], '/query', 'QueryController@run');
 
