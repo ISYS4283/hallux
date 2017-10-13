@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use App\Connection;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -23,7 +24,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Route::bind('connection', function($value) {
+            return Connection::where('name', $value)->first();
+        });
 
         parent::boot();
     }

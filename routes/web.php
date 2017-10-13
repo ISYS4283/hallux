@@ -15,4 +15,5 @@ Route::view('/', 'welcome', ['title' => 'Hallux Productions Welcome']);
 
 Route::name('query')->match(['get', 'post'], '/query', 'QueryController@run');
 
+Route::resource('connections', 'ConnectionController');
 Route::resource('quizzes', 'QuizController');
