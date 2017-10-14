@@ -4,9 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Connection;
 use Illuminate\Http\Request;
+use App\ConnectionTemplateRepository;
 
 class ConnectionController extends Controller
 {
+    protected $templateRepository;
+
+    public function __construct(ConnectionTemplateRepository $templateRepository)
+    {
+        $this->templateRepository = $templateRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -29,7 +37,12 @@ class ConnectionController extends Controller
      */
     public function create()
     {
-        return view('connections.create');
+        $data = [
+            'title' => 'Create Connection',
+            'templates' => $this->templateRepository->getTemplatesArray(),
+        ];
+
+        return view('connections.create', $data);
     }
 
     /**

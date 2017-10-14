@@ -24,12 +24,31 @@
 
             <div class="panel-body">
                 <div class="form-group">
-                    <label for="driver">Select Driver:</label>
+                    <label for="driver">Select Template:</label>
                     <select id="driver" class="form-control">
-                        <option value="sqlsrv">Microsoft SQL Server</option>
-                        <option value="mysql">MySQL</option>
+                        @foreach($templates as $key => $template)
+                            <option>{{ $key }}</option>
+                        @endforeach
                     </select>
                 </div>
+
+                @foreach($templates as $key => $template)
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                        @foreach($template as $name => $attribute)
+                            <div class="form-group">
+                                <label for="config-{{$name}}" class="control-label">{{ $name }}:</label>
+                                <input type="text"
+                                    id="config-{{$name}}"
+                                    name="config[{{$name}}]"
+                                    value="{{$attribute}}"
+                                    placeholder="Enter {{$name}}."
+                                    class="form-control">
+                            </div>
+                        @endforeach
+                        </div>
+                    </div>
+                @endforeach
             </div>
         </div>
 
