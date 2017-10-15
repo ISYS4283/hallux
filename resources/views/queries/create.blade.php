@@ -22,6 +22,17 @@
 
     <form id="query" method="post">
         {{ csrf_field() }}
+
+        <div class="form-group">
+            <label for="connection_id">Connection:</label>
+            <select id="connection_id" name="connection_id" class="form-control" required>
+                <option disabled selected></option>
+                @foreach($connections as $connection)
+                    <option value="{{$connection->id}}">{{ $connection->name }}</option>
+                @endforeach
+            </select>
+        </div>
+
         <input type="hidden" name="sql">
         <textarea id="sql" rows="8" class="form-control">{{ $sql or '-- write your query here' }}</textarea>
         <br>

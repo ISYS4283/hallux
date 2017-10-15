@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Query;
+use App\Connection;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Database\QueryException;
@@ -28,6 +29,8 @@ class QueryController extends Controller
      */
     public function create(Request $request)
     {
+        $connections = Connection::all();
+
         if ($request->has('sql')) {
             $sql = $request->sql;
 
@@ -40,7 +43,8 @@ class QueryController extends Controller
                 $error = $e->getMessage();
             }
         }
-        return view('queries.create', compact('rows', 'sql', 'error'));
+
+        return view('queries.create', compact('rows', 'sql', 'error', 'connections'));
     }
 
     /**
