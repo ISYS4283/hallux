@@ -30,4 +30,19 @@ class QueryTest extends TestCase
             ->assertSeeText($query->description)
         ;
     }
+
+    public function test_can_create_query()
+    {
+        $query = make(Query::class);
+
+        $response = $this
+            ->post('/queries', $query->toArray())
+            ->assertStatus(302)
+        ;
+
+        $this
+            ->get($response->headers->get('Location'))
+            ->assertSeeText($query->description)
+        ;
+    }
 }

@@ -51,7 +51,9 @@ class QueryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $query = Query::create($request->all());
+
+        return redirect(route('queries.show', $query));
     }
 
     /**
