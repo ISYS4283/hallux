@@ -11,4 +11,9 @@ class Query extends Model
         'description',
         'connection_id',
     ];
+
+    public function connection()
+    {
+        return $this->belongsTo(Connection::class);
+    }
 }

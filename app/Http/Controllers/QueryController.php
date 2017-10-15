@@ -16,7 +16,9 @@ class QueryController extends Controller
      */
     public function index()
     {
-        //
+        $queries = Query::with('connection')->get();
+
+        return view('queries.index', compact('queries'));
     }
 
     /**
