@@ -36,7 +36,7 @@
         <input type="hidden" name="sql">
         <textarea id="sql" rows="8" class="form-control">{{ $sql or '-- write your query here' }}</textarea>
         <br>
-        <button type="submit" class="btn btn-primary">Execute</button>
+        <button type="submit" class="btn btn-default">Execute</button>
     </form>
 
     @unless(empty($rows))

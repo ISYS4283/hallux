@@ -29,20 +29,22 @@ class QueryController extends Controller
      */
     public function create(Request $request)
     {
-        $connections = Connection::all();
-
         if ($request->has('sql')) {
+            $connection = Connection::findOrFail($request->connection_id);
+            config(["database.connections.{$connection->name}" => $connection->config]);
+
             $sql = $request->sql;
 
             try {
-                // TODO: specify connection
-                $rows = DB::select( DB::raw($sql) );
+                $rows = DB::connection($connection->name)->select( DB::raw($sql) );
                 // limit to 1000 rows
                 $rows = array_slice($rows, 0, 1000);
             } catch (QueryException $e) {
                 $error = $e->getMessage();
             }
         }
+
+        $connections = Connection::all();
 
         return view('queries.create', compact('rows', 'sql', 'error', 'connections'));
     }
