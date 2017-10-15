@@ -5,11 +5,11 @@
 @endpush
 
 @section('content')
-    <h1>Queries</h1>
-
     <div class="pull-right">
         <a href="{{ route('queries.create') }}" class="btn btn-success">Create <i class="fa fa-plus-circle" aria-hidden="true"></i></a>
     </div>
+
+    <h1>Queries</h1>
 
     <p class="lead">Here is a list of queries.</p>
 
