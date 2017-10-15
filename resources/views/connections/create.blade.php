@@ -25,7 +25,8 @@
             <div class="panel-body">
                 <div class="form-group">
                     <label for="driver">Select Template:</label>
-                    <select id="driver" class="form-control">
+                    <select id="driver" class="form-control" required>
+                        <option disabled selected></option>
                         @foreach($templates as $key => $template)
                             <option>{{ $key }}</option>
                         @endforeach
