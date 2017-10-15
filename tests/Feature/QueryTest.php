@@ -20,4 +20,14 @@ class QueryTest extends TestCase
             $response->assertSeeText($query->description);
         }
     }
+
+    public function test_can_show_query()
+    {
+        $query = create(Query::class);
+
+        $this
+            ->get("/queries/{$query->id}")
+            ->assertSeeText($query->description)
+        ;
+    }
 }

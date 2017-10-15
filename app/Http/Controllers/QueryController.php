@@ -62,7 +62,7 @@ class QueryController extends Controller
      */
     public function show(Query $query)
     {
-        //
+        return view('queries.show', compact('query'));
     }
 
     /**
