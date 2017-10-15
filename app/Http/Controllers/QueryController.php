@@ -29,8 +29,15 @@ class QueryController extends Controller
      */
     public function create(Request $request)
     {
+        $connections = Connection::all();
+
         if ($request->has('sql')) {
-            $connection = Connection::findOrFail($request->connection_id);
+            $connection = $connections->first(function($connection) use ($request){
+                return $connection->id == $request->connection_id;
+            });
+
+            abort_if(empty($connection), 404);
+
             config(["database.connections.{$connection->name}" => $connection->config]);
 
             $sql = $request->sql;
@@ -43,8 +50,6 @@ class QueryController extends Controller
                 $error = $e->getMessage();
             }
         }
-
-        $connections = Connection::all();
 
         return view('queries.create', compact('rows', 'sql', 'error', 'connections'));
     }
