@@ -31,27 +31,38 @@
                         @endforeach
                     </select>
                 </div>
-
-                @foreach($templates as $key => $template)
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                        @foreach($template as $name => $attribute)
-                            <div class="form-group">
-                                <label for="config-{{$name}}" class="control-label">{{ $name }}:</label>
-                                <input type="text"
-                                    id="config-{{$name}}"
-                                    name="config[{{$name}}]"
-                                    value="{{$attribute}}"
-                                    placeholder="Enter {{$name}}."
-                                    class="form-control">
-                            </div>
-                        @endforeach
-                        </div>
-                    </div>
-                @endforeach
+                <div id="template-container"></div>
             </div>
         </div>
 
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+
+    <div class="hidden">
+        @foreach($templates as $key => $template)
+            <div id="template-{{$key}}" class="panel panel-default">
+                <div class="panel-body">
+                @foreach($template as $name => $attribute)
+                    <div class="form-group">
+                        <label for="config-{{$name}}" class="control-label">{{ $name }}:</label>
+                        <input type="text"
+                            id="config-{{$name}}"
+                            name="config[{{$name}}]"
+                            value="{{$attribute}}"
+                            placeholder="Enter {{$name}}."
+                            class="form-control">
+                    </div>
+                @endforeach
+                </div>
+            </div>
+        @endforeach
+    </div>
 @endsection
+
+@push('scripts')
+    <script>
+        $('#driver').change(function(e){
+            $('#template-container').html($(`#template-${this.value}`).html());
+        });
+    </script>
+@endpush
