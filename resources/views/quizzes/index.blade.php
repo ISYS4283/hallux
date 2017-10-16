@@ -5,6 +5,10 @@
 @endpush
 
 @section('content')
+    <div class="pull-right">
+        <a href="{{ route('quizzes.create') }}" class="btn btn-success">Create <i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+    </div>
+
     <h1>Quizzes</h1>
 
     <ul>
