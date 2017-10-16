@@ -11,13 +11,15 @@
 
     <h1>{{ $quiz->title }}</h1>
 
-    @foreach ($quiz->queries as $qq)
+    @foreach ($quiz->queries as $query)
         <div class="panel panel-default">
             <div class="panel-heading">
-                Points: {{ $qq->pivot->points }}
+                <a href="{{ route('quizzes.queries.show', [$quiz->id, $query->id]) }}">Query #{{$query->id}}</a>
+                <br>
+                Points: {{ $query->pivot->points }}
             </div>
             <div class="panel-body">
-                {{ $qq->description }}
+                {{ $query->description }}
             </div>
         </div>
     @endforeach
