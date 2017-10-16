@@ -14,4 +14,24 @@
     <p>Points: {{ $qq->points }}</p>
 
     <p class="lead">{{ $qq->qquery->description }}</p>
+
+    <button type="button" class="btn btn-default" onclick="$('#expectedData').toggle()">Show/Hide Data</button>
+    <table id="expectedData" class="table table-striped table-bordered table-responsive">
+        <thead>
+            <tr>
+            @foreach ($rows[0] as $name => $column)
+                <th>{{ $name }}</th>
+            @endforeach
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($rows as $row)
+                <tr>
+                    @foreach($row as $column)
+                        <td>{{ $column }}</td>
+                    @endforeach
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 @endsection

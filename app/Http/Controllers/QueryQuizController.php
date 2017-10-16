@@ -73,6 +73,7 @@ class QueryQuizController extends Controller
         return view('quizzes.queries.show', [
             'title' => "Quiz Query #{$qq->qquery->id}: {$qq->qquery->description}",
             'qq' => $qq,
+            'rows' => $qq->qquery->data()['rows'],
         ]);
     }
 

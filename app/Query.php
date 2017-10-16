@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class Query extends Model
 {
@@ -20,5 +21,22 @@ class Query extends Model
     public function quizzes()
     {
         return $this->belongsToMany(Quiz::class)->using(QueryQuiz::class);
+    }
+
+    public function data() : array
+    {
+        $connection = $this->connection()->first();
+
+        config(["database.connections.{$connection->name}" => $connection->config]);
+
+        try {
+            $rows = DB::connection($connection->name)->select( DB::raw($this->attributes['sql']) );
+            // limit to 1000 rows
+            $rows = array_slice($rows, 0, 1000);
+        } catch (QueryException $e) {
+            $error = $e->getMessage();
+        }
+
+        return compact('rows', 'error');
     }
 }

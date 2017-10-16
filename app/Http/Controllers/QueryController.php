@@ -6,7 +6,6 @@ use App\Query;
 use App\Quiz;
 use App\Connection;
 use Illuminate\Http\Request;
-use DB;
 use Illuminate\Database\QueryException;
 
 class QueryController extends Controller
@@ -46,15 +45,9 @@ class QueryController extends Controller
 
             // TODO: I wish we could pass a closure to `pull` instead of just a key
 
-            config(["database.connections.{$connection->name}" => $connection->config]);
+            $query = new Query($request->all());
 
-            try {
-                $rows = DB::connection($connection->name)->select( DB::raw($request->sql) );
-                // limit to 1000 rows
-                $rows = array_slice($rows, 0, 1000);
-            } catch (QueryException $e) {
-                $error = $e->getMessage();
-            }
+            extract($query->data());
         }
 
         return view('queries.create', compact('rows', 'error', 'connections', 'connection', 'request'));
