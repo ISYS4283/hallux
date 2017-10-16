@@ -58,7 +58,7 @@ class QueryController extends Controller
             }
         }
 
-        return view('queries.create', compact('rows', 'sql', 'error', 'connections', 'connection'));
+        return view('queries.create', compact('rows', 'sql', 'error', 'connections', 'connection', 'request'));
     }
 
     /**
