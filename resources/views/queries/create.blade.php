@@ -87,14 +87,14 @@
             maxLines: Infinity,
             fontSize: 18,
         });
+
+        $('#query').submit(function() {
+            $('#query input[name="sql"]').val(editor.getSession().getValue());
+        });
     </script>
 
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script>
-        $('#query').submit(function() {
-            $('#query input[name="sql"]').val(editor.getSession().getValue());
-        });
-
         $('.datatable').DataTable({
             "processing": true,
             "initComplete": function(settings, json) {

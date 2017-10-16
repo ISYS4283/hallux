@@ -18,3 +18,4 @@ Route::resource('queries', 'QueryController');
 Route::post('/queries/create', 'QueryController@create');
 Route::resource('quizzes', 'QuizController');
 Route::resource('quizzes.queries', 'QueryQuizController');
+Route::name('quizzes.queries.attempt')->post('/quizzes/{quiz}/queries/{query}', 'QueryQuizController@show');

@@ -58,7 +58,7 @@ class QueryQuizController extends Controller
      * @param  \App\QueryQuiz  $queryQuiz
      * @return \Illuminate\Http\Response
      */
-    public function show($quiz, $query)
+    public function show($quiz, $query, Request $request)
     {
         $qq = QueryQuiz::where([
             ['query_id', $query],
@@ -73,7 +73,8 @@ class QueryQuizController extends Controller
         return view('quizzes.queries.show', [
             'title' => "Quiz Query #{$qq->qquery->id}: {$qq->qquery->description}",
             'qq' => $qq,
-            'rows' => $qq->qquery->data()['rows'],
+            'expectedRows' => $qq->qquery->data()['rows'],
+            'request' => $request,
         ]);
     }
 
