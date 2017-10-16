@@ -15,7 +15,8 @@ class QuizController extends Controller
     public function index()
     {
         return view('quizzes.index', [
-            'title' => 'Quizzes | Hallux',
+            'title' => 'Quizzes',
+            'quizzes' => Quiz::all(),
         ]);
     }
 
@@ -48,7 +49,10 @@ class QuizController extends Controller
      */
     public function show(Quiz $quiz)
     {
-        //
+        return view('quizzes.show', [
+            'title' => "Quiz #{$quiz->id}: {$quiz->title}",
+            'quiz' => $quiz,
+        ]);
     }
 
     /**
