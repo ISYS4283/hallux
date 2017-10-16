@@ -38,6 +38,13 @@ class QueryController extends Controller
 
             abort_if(empty($connection), 404);
 
+            // remove the connection
+            $connections = $connections->filter(function ($connection) use ($request){
+                return $connection->id != $request->connection_id;
+            });
+
+            // TODO: I wish we could pass a closure to `pull` instead of just a key
+
             config(["database.connections.{$connection->name}" => $connection->config]);
 
             $sql = $request->sql;
@@ -51,7 +58,7 @@ class QueryController extends Controller
             }
         }
 
-        return view('queries.create', compact('rows', 'sql', 'error', 'connections'));
+        return view('queries.create', compact('rows', 'sql', 'error', 'connections', 'connection'));
     }
 
     /**

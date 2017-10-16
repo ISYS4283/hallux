@@ -26,10 +26,15 @@
         <div class="form-group">
             <label for="connection_id">Connection:</label>
             <select id="connection_id" name="connection_id" class="form-control" required>
-                <option disabled selected></option>
+                @if(empty($connection))
+                    <option disabled selected></option>
+                @else
+                    <option value="{{$connection->id}}" selected>{{ $connection->name }}</option>
+                @endif
                 @foreach($connections as $connection)
                     <option value="{{$connection->id}}">{{ $connection->name }}</option>
                 @endforeach
+
             </select>
         </div>
 
