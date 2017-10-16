@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Quiz;
+use App\Query;
 use App\QueryQuiz;
 
 class QuizTest extends TestCase
@@ -64,6 +65,25 @@ class QuizTest extends TestCase
         $this
             ->get($response->headers->get('Location'))
             ->assertSeeText($quiz->title)
+        ;
+    }
+
+    public function test_can_add_query_to_quiz()
+    {
+        $query = create(Query::class);
+
+        $quiz = create(Quiz::class);
+
+        $this
+            ->post("/quizzes/{$quiz->id}/queries", [
+                'query_id' => $query->id,
+            ])
+            ->assertStatus(204)
+        ;
+
+        $this
+            ->get("/quizzes/{$quiz->id}/queries/{$query->id}")
+            ->assertSeeText($query->description)
         ;
     }
 }
