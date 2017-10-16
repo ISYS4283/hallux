@@ -38,7 +38,9 @@ class QuizController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $quiz = Quiz::create($request->all());
+
+        return redirect(route('quizzes.show', $quiz));
     }
 
     /**

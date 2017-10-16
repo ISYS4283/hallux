@@ -51,4 +51,19 @@ class QuizTest extends TestCase
             ->assertSeeText("{$qq->qquery->description}")
         ;
     }
+
+    public function test_can_create_quiz()
+    {
+        $quiz = make(Quiz::class);
+
+        $response = $this
+            ->post('/quizzes', $quiz->toArray())
+            ->assertStatus(302)
+        ;
+
+        $this
+            ->get($response->headers->get('Location'))
+            ->assertSeeText($quiz->title)
+        ;
+    }
 }
