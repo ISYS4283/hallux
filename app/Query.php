@@ -16,4 +16,9 @@ class Query extends Model
     {
         return $this->belongsTo(Connection::class);
     }
+
+    public function quizzes()
+    {
+        return $this->belongsToMany(Quiz::class)->using(QueryQuiz::class);
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Query;
+use App\Quiz;
 use App\Connection;
 use Illuminate\Http\Request;
 use DB;
@@ -80,7 +81,9 @@ class QueryController extends Controller
      */
     public function show(Query $query)
     {
-        return view('queries.show', compact('query'));
+        $quizzes = Quiz::all();
+
+        return view('queries.show', compact('query', 'quizzes'));
     }
 
     /**
