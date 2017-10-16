@@ -18,8 +18,8 @@ class CreateQueriesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->string('sql');
-            $table->string('description');
+            $table->text('sql');
+            $table->text('description');
 
             $table->unsignedInteger('connection_id');
             $table->foreign('connection_id')
