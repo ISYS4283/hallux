@@ -47,10 +47,8 @@ class QueryController extends Controller
 
             config(["database.connections.{$connection->name}" => $connection->config]);
 
-            $sql = $request->sql;
-
             try {
-                $rows = DB::connection($connection->name)->select( DB::raw($sql) );
+                $rows = DB::connection($connection->name)->select( DB::raw($request->sql) );
                 // limit to 1000 rows
                 $rows = array_slice($rows, 0, 1000);
             } catch (QueryException $e) {
@@ -58,7 +56,7 @@ class QueryController extends Controller
             }
         }
 
-        return view('queries.create', compact('rows', 'sql', 'error', 'connections', 'connection', 'request'));
+        return view('queries.create', compact('rows', 'error', 'connections', 'connection', 'request'));
     }
 
     /**

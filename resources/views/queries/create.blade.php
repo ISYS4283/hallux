@@ -44,7 +44,7 @@
         </div>
 
         <input type="hidden" name="sql">
-        <textarea id="sql" rows="8" class="form-control">{{ $sql or '-- write your query here' }}</textarea>
+        <textarea id="sql" rows="8" class="form-control">{{ $request->sql or '-- write your query here' }}</textarea>
         <br>
         <button type="submit" class="btn btn-default">Execute</button>
         <button type="submit" formaction="{{ route('queries.store') }}" class="btn btn-primary">Save</button>
