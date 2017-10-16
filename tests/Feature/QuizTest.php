@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Quiz;
+use App\QueryQuiz;
 
 class QuizTest extends TestCase
 {
@@ -28,6 +29,17 @@ class QuizTest extends TestCase
         $this
             ->get("/quizzes/{$quiz->id}")
             ->assertSeeText($quiz->title)
+        ;
+    }
+
+    public function test_can_show_query_quiz()
+    {
+        $qq = create(QueryQuiz::class);
+
+        $this
+            ->get("/quizzes/{$qq->quiz_id}/queries/{$qq->query_id}")
+            ->assertSeeText("Points: {$qq->points}")
+            ->assertSeeText("{$qq->qquery->description}")
         ;
     }
 }

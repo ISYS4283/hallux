@@ -9,4 +9,9 @@ class Quiz extends Model
     protected $fillable = [
         'title',
     ];
+
+    public function queries()
+    {
+        return $this->belongsToMany(Query::class)->using(QueryQuiz::class);
+    }
 }

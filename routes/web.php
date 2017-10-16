@@ -17,3 +17,4 @@ Route::resource('connections', 'ConnectionController');
 Route::resource('queries', 'QueryController');
 Route::post('/queries/create', 'QueryController@create');
 Route::resource('quizzes', 'QuizController');
+Route::resource('quizzes.queries', 'QueryQuizController');
