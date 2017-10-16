@@ -21,4 +21,9 @@ class Connection extends Model
     {
         $this->attributes['config'] = Crypt::encrypt($value);
     }
+
+    public function queries()
+    {
+        return $this->hasMany(Query::class);
+    }
 }

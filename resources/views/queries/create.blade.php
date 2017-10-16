@@ -22,10 +22,32 @@
 
     <form id="query" method="post">
         {{ csrf_field() }}
+
+        <div class="form-group">
+            <label for="connection_id">Connection:</label>
+            <select id="connection_id" name="connection_id" class="form-control" required>
+                @if(empty($connection))
+                    <option disabled selected></option>
+                @else
+                    <option value="{{$connection->id}}" selected>{{ $connection->name }}</option>
+                @endif
+                @foreach($connections as $connection)
+                    <option value="{{$connection->id}}">{{ $connection->name }}</option>
+                @endforeach
+
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="8" class="form-control">{{ $request->description }}</textarea>
+        </div>
+
         <input type="hidden" name="sql">
-        <textarea id="sql" rows="8" class="form-control">{{ $sql or '-- write your query here' }}</textarea>
+        <textarea id="sql" rows="8" class="form-control">{{ $request->sql or '-- write your query here' }}</textarea>
         <br>
-        <button type="submit" class="btn btn-primary">Execute</button>
+        <button type="submit" class="btn btn-default">Execute</button>
+        <button type="submit" formaction="{{ route('queries.store') }}" class="btn btn-primary">Save</button>
     </form>
 
     @unless(empty($rows))

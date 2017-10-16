@@ -13,7 +13,7 @@
 
 Route::view('/', 'welcome', ['title' => 'Query Quizzer Welcome']);
 
-Route::name('query')->match(['get', 'post'], '/query', 'QueryController@run');
-
 Route::resource('connections', 'ConnectionController');
+Route::resource('queries', 'QueryController');
+Route::post('/queries/create', 'QueryController@create');
 Route::resource('quizzes', 'QuizController');
