@@ -14,5 +14,5 @@
 
     <p class="lead">{{ $query->description }}</p>
 
-    <pre>{{ $query->sql }}</pre>
+    <pre class="prettyprint lang-sql linenums">{{ $query->sql }}</pre>
 @endsection

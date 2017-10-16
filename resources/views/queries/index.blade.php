@@ -20,7 +20,7 @@
             </div>
             <div class="panel-body">
                 <p>{{ $query->description }}</p>
-                <pre>{{ $query->sql }}</pre>
+                <pre class="prettyprint lang-sql linenums">{{ $query->sql }}</pre>
             </div>
             <div class="panel-footer">
                 <p>{{ $query->connection->name }}</p>
