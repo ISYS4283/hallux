@@ -40,9 +40,15 @@ class QueryQuizController extends Controller
      */
     public function store(Request $request, Quiz $quiz)
     {
-        $quiz->queries()->attach($request->query_id);
+        $query = Query::findOrFail($request->query_id);
 
-        return response(null, 204);
+        if ($request->has('points')) {
+            $data = ['points' => $request->points];
+        }
+
+        $quiz->queries()->attach($query, $data ?? []);
+
+        return redirect(route('quizzes.queries.show', [$quiz, $query]));
     }
 
     /**

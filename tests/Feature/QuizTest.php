@@ -74,15 +74,15 @@ class QuizTest extends TestCase
 
         $quiz = create(Quiz::class);
 
-        $this
+        $response = $this
             ->post("/quizzes/{$quiz->id}/queries", [
                 'query_id' => $query->id,
             ])
-            ->assertStatus(204)
+            ->assertStatus(302)
         ;
 
         $this
-            ->get("/quizzes/{$quiz->id}/queries/{$query->id}")
+            ->get($response->headers->get('Location'))
             ->assertSeeText($query->description)
         ;
     }
