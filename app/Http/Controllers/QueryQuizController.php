@@ -50,15 +50,20 @@ class QueryQuizController extends Controller
      * @param  \App\QueryQuiz  $queryQuiz
      * @return \Illuminate\Http\Response
      */
-    public function show(Quiz $quiz, Query $query)
+    public function show($quiz, $query)
     {
         $qq = QueryQuiz::where([
-            ['query_id', $query->id],
-            ['quiz_id', $quiz->id],
-        ])->first();
+            ['query_id', $query],
+            ['quiz_id', $quiz],
+        ])
+        ->with('qquery')
+        ->with('quiz')
+        ->first();
+
+        abort_if(empty($qq), 404);
 
         return view('quizzes.queries.show', [
-            'title' => "Quiz Query #{$query->id}: {$query->description}",
+            'title' => "Quiz Query #{$qq->qquery->id}: {$qq->qquery->description}",
             'qq' => $qq,
         ]);
     }
