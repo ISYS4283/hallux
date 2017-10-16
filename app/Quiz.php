@@ -12,6 +12,6 @@ class Quiz extends Model
 
     public function queries()
     {
-        return $this->belongsToMany(Query::class)->using(QueryQuiz::class);
+        return $this->belongsToMany(Query::class)->withPivot('points')->using(QueryQuiz::class);
     }
 }

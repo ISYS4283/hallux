@@ -10,4 +10,15 @@
     </div>
 
     <h1>{{ $quiz->title }}</h1>
+
+    @foreach ($quiz->queries as $qq)
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Points: {{ $qq->pivot->points }}
+            </div>
+            <div class="panel-body">
+                {{ $qq->description }}
+            </div>
+        </div>
+    @endforeach
 @endsection
