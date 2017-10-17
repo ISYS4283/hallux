@@ -18,7 +18,7 @@ class Attempt extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function queryQuiz()
+    public function qq()
     {
         return $this->belongsTo(QueryQuiz::class);
     }
