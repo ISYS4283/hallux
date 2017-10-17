@@ -17,28 +17,30 @@ class ResultSetComparator
         foreach ($a as $index => $row) {
             foreach ($row as $name => $column) {
                 if (array_key_exists($name, $b[$index] ?? [])) {
-                    $th .= "<th>$name</th>";
+                    $th .= sprintf('<th>%s</th>', e($name));
                 } else {
                     $diff = true;
-                    $th .= "<th class=\"danger\">$name</th>";
+                    $th .= sprintf('<th class="danger">%s</th>', e($name));
                 }
             }
             break;
         }
         $thead = "<thead><tr>$th</tr></thead>";
 
-        $td = '';
+        $tr = '';
         foreach ($a as $index => $row) {
+            $td = '';
             foreach ($row as $name => $column) {
-                if ($column === ($b[$index][$name] ?? null)) {
-                    $td .= "<td>$column</td>";
+                if ($column === ($b[$index]->$name ?? $b[$index][$name] ?? null)) {
+                    $td .= sprintf('<td>%s</td>', e($column));
                 } else {
                     $diff = true;
-                    $td .= "<td class=\"danger\">$column</td>";
+                    $td .= sprintf('<td class="danger">%s</td>', e($column));
                 }
             }
+            $tr .= sprintf('<tr>%s</tr>', $td);
         }
-        $tbody = "<tbody>$td</tbody>";
+        $tbody = "<tbody>$tr</tbody>";
 
         if ($diff) {
             return $thead.$tbody;

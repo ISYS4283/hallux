@@ -27,22 +27,26 @@
         <h2>Expected Data</h2>
         <button type="button" class="btn btn-default" onclick="$('#expectedData').toggle()">Show/Hide</button>
         <table id="expectedData" class="table table-striped table-bordered table-responsive">
-            <thead>
-                <tr>
-                @foreach ($expectedRows[0] as $name => $column)
-                    <th>{{ $name }}</th>
-                @endforeach
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($expectedRows as $row)
+            @empty ($diff)
+                <thead>
                     <tr>
-                        @foreach($row as $column)
-                            <td>{{ $column }}</td>
-                        @endforeach
+                    @foreach ($expectedRows[0] as $name => $column)
+                        <th>{{ $name }}</th>
+                    @endforeach
                     </tr>
-                @endforeach
-            </tbody>
+                </thead>
+                <tbody>
+                    @foreach($expectedRows as $row)
+                        <tr>
+                            @foreach($row as $column)
+                                <td>{{ $column }}</td>
+                            @endforeach
+                        </tr>
+                    @endforeach
+                </tbody>
+            @else
+                {!! $diff !!}
+            @endempty
         </table>
     </section>
 

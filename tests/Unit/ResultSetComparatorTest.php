@@ -32,7 +32,7 @@ class ResultSetComparatorTest extends TestCase
             ['one','six','three'],
         ];
 
-        $expected = '<thead><tr><th>0</th><th>1</th><th>2</th></tr></thead><tbody><td>1</td><td>2</td><td class="danger">3</td><td>one</td><td class="danger">two</td><td>three</td></tbody>';
+        $expected = '<thead><tr><th>0</th><th>1</th><th>2</th></tr></thead><tbody><tr><td>1</td><td>2</td><td class="danger">3</td></tr><tr><td>one</td><td class="danger">two</td><td>three</td></tr></tbody>';
 
         $comparator = new ResultSetComparator;
 

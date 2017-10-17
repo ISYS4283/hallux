@@ -9,6 +9,7 @@ use App\Attempt;
 use Illuminate\Http\Request;
 use Auth;
 use View;
+use App\Validators\ResultSetComparator;
 
 class QueryQuizController extends Controller
 {
@@ -87,17 +88,17 @@ class QueryQuizController extends Controller
     public function attempt(int $quiz, int $query, Request $request)
     {
         $qq = $this->getQueryJoinQueryQuiz($query, $quiz);
+        $expectedRows = $qq->data()['rows'];
 
         $queryAttempt = clone $qq;
-
         $queryAttempt->sql = $request->sql;
-
         $data = $queryAttempt->data();
-
-        View::share('actualRows', $data['rows'] ?? []);
+        $actualRows = $data['rows'] ?? [];
+        View::share('actualRows', $actualRows);
         View::share('error', $data['error'] ?? null);
 
-        if ($qq->sql == $request->sql) {
+        $match = (new ResultSetComparator)->match($expectedRows, $actualRows);
+        if (true === $match) {
             Attempt::create([
                 'query_quiz_id' => $qq->id,
                 'user_id' => Auth::user()->id,
@@ -106,6 +107,8 @@ class QueryQuizController extends Controller
             ]);
 
             View::share('success', "Congratulations, that's a valid solution!");
+        } else {
+            View::share('diff', $match);
         }
 
         return $this->show($quiz, $query, $request, $qq);
