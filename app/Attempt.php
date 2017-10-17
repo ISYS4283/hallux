@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Attempt extends Model
 {
     protected $fillable = [
-        'query_id',
-        'quiz_id',
+        'query_quiz_id',
         'user_id',
         'sql',
         'valid',
@@ -17,5 +16,10 @@ class Attempt extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function queryQuiz()
+    {
+        return $this->belongsTo(QueryQuiz::class);
     }
 }

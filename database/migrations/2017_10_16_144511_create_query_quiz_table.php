@@ -14,6 +14,7 @@ class CreateQueryQuizTable extends Migration
     public function up()
     {
         Schema::create('query_quiz', function (Blueprint $table) {
+            $table->increments('id');
             $table->timestamps();
 
             $table->tinyInteger('points')->default(1);
@@ -24,7 +25,7 @@ class CreateQueryQuizTable extends Migration
             $table->unsignedInteger('quiz_id');
             $table->foreign('quiz_id')->references('id')->on('quizzes');
 
-            $table->primary(['query_id', 'quiz_id']);
+            $table->unique(['query_id', 'quiz_id']);
         });
     }
 

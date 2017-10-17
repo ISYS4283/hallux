@@ -21,4 +21,9 @@ class QueryQuiz extends Pivot
     {
         return $this->belongsTo(Quiz::class);
     }
+
+    public function attempts()
+    {
+        return $this->hasMany(Attempt::class);
+    }
 }
