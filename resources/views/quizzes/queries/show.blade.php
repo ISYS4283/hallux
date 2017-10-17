@@ -15,37 +15,43 @@
 
     <p class="lead">{{ $qq->qquery->description }}</p>
 
-    <button type="button" class="btn btn-default" onclick="$('#expectedData').toggle()">Show/Hide Data</button>
-    <table id="expectedData" class="table table-striped table-bordered table-responsive">
-        <thead>
-            <tr>
-            @foreach ($expectedRows[0] as $name => $column)
-                <th>{{ $name }}</th>
-            @endforeach
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($expectedRows as $row)
+    <section>
+        <h2>Expected Data</h2>
+        <button type="button" class="btn btn-default" onclick="$('#expectedData').toggle()">Show/Hide</button>
+        <table id="expectedData" class="table table-striped table-bordered table-responsive">
+            <thead>
                 <tr>
-                    @foreach($row as $column)
-                        <td>{{ $column }}</td>
-                    @endforeach
+                @foreach ($expectedRows[0] as $name => $column)
+                    <th>{{ $name }}</th>
+                @endforeach
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach($expectedRows as $row)
+                    <tr>
+                        @foreach($row as $column)
+                            <td>{{ $column }}</td>
+                        @endforeach
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </section>
 
-    <form id="query" method="post">
-        {{ csrf_field() }}
+    <section>
+        <h2>Solution</h2>
+        <form id="query" method="post">
+            {{ csrf_field() }}
 
-        <div class="form-group">
-            <input type="hidden" name="sql">
-            <label for="sql">SQL:</label>
-            <textarea id="sql" rows="8" class="form-control">{{ $request->sql or '-- write your query here' }}</textarea>
-        </div>
+            <div class="form-group">
+                <input type="hidden" name="sql">
+                <label for="sql">SQL:</label>
+                <textarea id="sql" rows="8" class="form-control">{{ $request->sql or '-- write your query here' }}</textarea>
+            </div>
 
-        <button type="submit" class="btn btn-primary">Execute</button>
-    </form>
+            <button type="submit" class="btn btn-primary">Execute</button>
+        </form>
+    </section>
 @endsection
 
 @push('scripts')
