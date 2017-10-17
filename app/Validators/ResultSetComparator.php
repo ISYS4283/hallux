@@ -9,7 +9,7 @@ class ResultSetComparator
      *
      * @return bool|string TRUE if match, otherwise diff-annotated HTML table fragment
      */
-    public function match($a, $b)
+    public function match(array $a, array $b)
     {
         $diff = false;
 
@@ -31,7 +31,7 @@ class ResultSetComparator
         foreach ($a as $index => $row) {
             $td = '';
             foreach ($row as $name => $column) {
-                if ($column === ($b[$index]->$name ?? $b[$index][$name] ?? null)) {
+                if ($column === ($b[$index]->$name ?? null)) {
                     $td .= sprintf('<td>%s</td>', e($column));
                 } else {
                     $diff = true;

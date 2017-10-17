@@ -11,8 +11,16 @@ class ResultSetComparatorTest extends TestCase
     public function test_can_compare_matching_result_sets()
     {
         $data = [
-            [1,2,3],
-            ['one','two','three'],
+            (object)[
+                'first' => 1,
+                'second' => 2,
+                'third' => 3,
+            ],
+            (object)[
+                'first' => 'one',
+                'second' => 'two',
+                'third' => 'three',
+            ],
         ];
 
         $comparator = new ResultSetComparator;
@@ -23,16 +31,32 @@ class ResultSetComparatorTest extends TestCase
     public function test_can_compare_different_result_sets()
     {
         $a = [
-            [1,2,3],
-            ['one','two','three'],
+            (object)[
+                'first' => 1,
+                'second' => 2,
+                'third' => 3,
+            ],
+            (object)[
+                'first' => 'one',
+                'second' => 'two',
+                'third' => 'three',
+            ],
         ];
 
         $b = [
-            [1,2,5],
-            ['one','six','three'],
+            (object)[
+                'first' => 1,
+                'second' => 2,
+                'third' => 5,
+            ],
+            (object)[
+                'first' => 'one',
+                'second' => 'six',
+                'third' => 'three',
+            ],
         ];
 
-        $expected = '<thead><tr><th>0</th><th>1</th><th>2</th></tr></thead><tbody><tr><td>1</td><td>2</td><td class="danger">3</td></tr><tr><td>one</td><td class="danger">two</td><td>three</td></tr></tbody>';
+        $expected = '<thead><tr><th>first</th><th>second</th><th>third</th></tr></thead><tbody><tr><td>1</td><td>2</td><td class="danger">3</td></tr><tr><td>one</td><td class="danger">two</td><td>three</td></tr></tbody>';
 
         $comparator = new ResultSetComparator;
 
