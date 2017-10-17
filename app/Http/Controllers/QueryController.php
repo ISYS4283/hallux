@@ -6,7 +6,6 @@ use App\Query;
 use App\Quiz;
 use App\Connection;
 use Illuminate\Http\Request;
-use Illuminate\Database\QueryException;
 
 class QueryController extends Controller
 {

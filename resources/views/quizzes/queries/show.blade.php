@@ -5,6 +5,14 @@
 @endpush
 
 @section('content')
+    @unless(empty($error))
+        <div class="alert alert-danger">{{ $error }}</div>
+    @endunless
+
+    @unless(empty($success))
+        <div class="alert alert-success">{{ $success }}</div>
+    @endunless
+
     <div class="pull-right">
         <a href="{{ route('quizzes.show', $qq->quiz_id) }}" class="btn btn-default">Back to Quiz</a>
         <a href="{{ route('quizzes.queries.edit', [$qq->quiz_id, $qq->query_id]) }}" class="btn btn-default">Edit <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
@@ -51,6 +59,29 @@
 
             <button type="submit" class="btn btn-primary">Execute</button>
         </form>
+    </section>
+
+    <section>
+        <h2>Actual Data</h2>
+        <button type="button" class="btn btn-default" onclick="$('#actualData').toggle()">Show/Hide</button>
+        <table id="actualData" class="table table-striped table-bordered table-responsive">
+            <thead>
+                <tr>
+                @foreach ($actualRows[0] ?? [] as $name => $column)
+                    <th>{{ $name }}</th>
+                @endforeach
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($actualRows ?? [] as $row)
+                    <tr>
+                        @foreach($row as $column)
+                            <td>{{ $column }}</td>
+                        @endforeach
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     </section>
 @endsection
 

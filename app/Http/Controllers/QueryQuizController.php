@@ -8,6 +8,7 @@ use App\QueryQuiz;
 use App\Attempt;
 use Illuminate\Http\Request;
 use Auth;
+use View;
 
 class QueryQuizController extends Controller
 {
@@ -87,6 +88,15 @@ class QueryQuizController extends Controller
     {
         $qq = $this->getQueryJoinQueryQuiz($query, $quiz);
 
+        $queryAttempt = clone $qq;
+
+        $queryAttempt->sql = $request->sql;
+
+        $data = $queryAttempt->data();
+
+        View::share('actualRows', $data['rows'] ?? []);
+        View::share('error', $data['error'] ?? null);
+
         if ($qq->sql == $request->sql) {
             Attempt::create([
                 'query_quiz_id' => $qq->id,
@@ -94,6 +104,8 @@ class QueryQuizController extends Controller
                 'sql' => $request->sql,
                 'valid' => true,
             ]);
+
+            View::share('success', "Congratulations, that's a valid solution!");
         }
 
         return $this->show($quiz, $query, $request, $qq);
