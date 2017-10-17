@@ -14,6 +14,8 @@ class QuizTest extends TestCase
 
     public function test_can_list_quizzes()
     {
+        $this->signIn();
+
         $quizzes = create(Quiz::class, [], 5);
 
         $response = $this->get('/quizzes');
@@ -25,6 +27,8 @@ class QuizTest extends TestCase
 
     public function test_can_show_quiz()
     {
+        $this->signIn();
+
         $qq = create(QueryQuiz::class);
 
         $response = $this
@@ -40,6 +44,8 @@ class QuizTest extends TestCase
 
     public function test_can_show_query_quiz()
     {
+        $this->signIn();
+
         $qq = create(QueryQuiz::class);
 
         $this
@@ -51,6 +57,8 @@ class QuizTest extends TestCase
 
     public function test_can_create_quiz()
     {
+        $this->signIn();
+
         $quiz = make(Quiz::class);
 
         $response = $this
@@ -66,6 +74,8 @@ class QuizTest extends TestCase
 
     public function test_can_add_query_to_quiz()
     {
+        $this->signIn();
+
         $query = create(Query::class);
 
         $quiz = create(Quiz::class);

@@ -12,6 +12,8 @@ class QueryTest extends TestCase
 
     public function test_can_list_queries()
     {
+        $this->signIn();
+
         $queries = create(Query::class, [], 5);
 
         $response = $this->get('/queries');
@@ -23,6 +25,8 @@ class QueryTest extends TestCase
 
     public function test_can_show_query()
     {
+        $this->signIn();
+
         $query = create(Query::class);
 
         $this
@@ -33,6 +37,8 @@ class QueryTest extends TestCase
 
     public function test_can_create_query()
     {
+        $this->signIn();
+
         $query = make(Query::class);
 
         $response = $this

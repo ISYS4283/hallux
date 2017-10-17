@@ -12,6 +12,8 @@ class ConnectionTest extends TestCase
 
     public function test_can_list_connections()
     {
+        $this->signIn();
+
         $connections = create(Connection::class, [], 5);
 
         $response = $this->get('/connections');
@@ -23,6 +25,8 @@ class ConnectionTest extends TestCase
 
     public function test_can_show_connection()
     {
+        $this->signIn();
+
         $connection = create(Connection::class);
 
         $this
@@ -33,6 +37,8 @@ class ConnectionTest extends TestCase
 
     public function test_can_create_connection()
     {
+        $this->signIn();
+
         $connection = make(Connection::class);
 
         $response = $this
