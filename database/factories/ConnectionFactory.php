@@ -4,17 +4,20 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Connection::class, function (Faker $faker) {
     $name = $faker->unique()->word;
+
+    $config = [
+        'driver' => 'sqlite',
+        'database' => ':memory:',
+        'prefix' => '',
+        'host' => $faker->domainName,
+    ];
+
+    config(["database.connections.$name" => $config]);
+
+    Artisan::call('migrate', ['--database' => $name]);
+
     return [
         'name' => $name,
-        'config' => [
-            'driver' => 'sqlsrv',
-            'host' => $faker->domainName,
-            'port' => '1433',
-            'database' => $name,
-            'username' => $faker->userName,
-            'password' => $faker->password,
-            'charset' => 'utf8',
-            'prefix' => '',
-        ],
+        'config' => $config,
     ];
 });

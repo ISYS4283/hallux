@@ -25,21 +25,17 @@ class QuizTest extends TestCase
 
     public function test_can_show_quiz()
     {
-        $quiz = create(Quiz::class);
-
-        $qqs = create(QueryQuiz::class, ['quiz_id' => $quiz->id], 5);
+        $qq = create(QueryQuiz::class);
 
         $response = $this
-            ->get("/quizzes/{$quiz->id}")
-            ->assertSeeText($quiz->title)
+            ->get("/quizzes/{$qq->quiz_id}")
+            ->assertSeeText($qq->quiz->title)
         ;
 
-        foreach ($qqs as $qq) {
-            $response
-                ->assertSeeText("Points: {$qq->points}")
-                ->assertSeeText("{$qq->qquery->description}")
-            ;
-        }
+        $response
+            ->assertSeeText("Points: {$qq->points}")
+            ->assertSeeText("{$qq->qquery->description}")
+        ;
     }
 
     public function test_can_show_query_quiz()
