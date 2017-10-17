@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
 @push('head')
-    <meta name="description" content="{{ $qq->qquery->description }}">
+    <meta name="description" content="{{ $qq->description }}">
 @endpush
 
 @section('content')
     <div class="pull-right">
-        <a href="{{ route('quizzes.show', $qq->quiz) }}" class="btn btn-default">Back to Quiz</a>
-        <a href="{{ route('quizzes.queries.edit', [$qq->quiz, $qq->qquery]) }}" class="btn btn-default">Edit <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+        <a href="{{ route('quizzes.show', $qq->quiz_id) }}" class="btn btn-default">Back to Quiz</a>
+        <a href="{{ route('quizzes.queries.edit', [$qq->quiz_id, $qq->query_id]) }}" class="btn btn-default">Edit <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
     </div>
 
-    <h1>Query #{{ $qq->qquery->id }}</h1>
+    <h1>Query #{{ $qq->query_id }}</h1>
     <p>Points: {{ $qq->points }}</p>
 
-    <p class="lead">{{ $qq->qquery->description }}</p>
+    <p class="lead">{{ $qq->description }}</p>
 
     <section>
         <h2>Expected Data</h2>

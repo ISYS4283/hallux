@@ -54,31 +54,46 @@ class QueryQuizController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Quiz  $quiz
-     * @param  \App\QueryQuiz  $queryQuiz
+     * @param  int \App\Quiz id  $quiz
+     * @param  int \App\Query id $query
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function show($quiz, $query, Request $request)
+    public function show(int $quiz, int $query, Request $request)
     {
-        $qq = $this->getQueryQuiz($query, $quiz);
+        $qq = $this->getQueryJoinQueryQuiz($query, $quiz);
 
         return view('quizzes.queries.show', [
-            'title' => "Quiz Query #{$qq->qquery->id}: {$qq->qquery->description}",
+            'title' => "Quiz Query #{$qq->query_id}: {$qq->description}",
             'qq' => $qq,
-            'expectedRows' => $qq->qquery->data()['rows'],
+            'expectedRows' => $qq->data()['rows'],
             'request' => $request,
         ]);
     }
 
-    protected function getQueryQuiz($query_id, $quiz_id)
+    /**
+     * Checks an SQL solution attempt.
+     *
+     * @param  int \App\Quiz id  $quiz
+     * @param  int \App\Query id $query
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function attempt($quiz, $query, Request $request)
     {
-        $qq = QueryQuiz::where([
-            ['query_id', $query_id],
-            ['quiz_id', $quiz_id],
+
+    }
+
+    /**
+     * Returns \App\Query hydrated with QueryQuiz attributes.
+     */
+    protected function getQueryJoinQueryQuiz(int $query_id, int $quiz_id)
+    {
+        $qq = Query::where([
+            ['query_quiz.query_id', $query_id],
+            ['query_quiz.quiz_id', $quiz_id],
         ])
-        ->with('qquery')
-        ->with('quiz')
+        ->join('query_quiz', 'query_quiz.query_id', '=', 'queries.id')
         ->first();
 
         abort_if(empty($qq), 404);
