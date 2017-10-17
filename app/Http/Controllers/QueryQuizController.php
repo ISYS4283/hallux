@@ -56,19 +56,12 @@ class QueryQuizController extends Controller
      *
      * @param  \App\Quiz  $quiz
      * @param  \App\QueryQuiz  $queryQuiz
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function show($quiz, $query, Request $request)
     {
-        $qq = QueryQuiz::where([
-            ['query_id', $query],
-            ['quiz_id', $quiz],
-        ])
-        ->with('qquery')
-        ->with('quiz')
-        ->first();
-
-        abort_if(empty($qq), 404);
+        $qq = $this->getQueryQuiz($query, $quiz);
 
         return view('quizzes.queries.show', [
             'title' => "Quiz Query #{$qq->qquery->id}: {$qq->qquery->description}",
@@ -76,6 +69,21 @@ class QueryQuizController extends Controller
             'expectedRows' => $qq->qquery->data()['rows'],
             'request' => $request,
         ]);
+    }
+
+    protected function getQueryQuiz($query_id, $quiz_id)
+    {
+        $qq = QueryQuiz::where([
+            ['query_id', $query_id],
+            ['quiz_id', $quiz_id],
+        ])
+        ->with('qquery')
+        ->with('quiz')
+        ->first();
+
+        abort_if(empty($qq), 404);
+
+        return $qq;
     }
 
     /**
