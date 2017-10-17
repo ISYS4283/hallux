@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\QueryQuiz;
+use App\User;
 
 class AttemptTest extends TestCase
 {
@@ -14,10 +15,19 @@ class AttemptTest extends TestCase
     {
         $qq = create(QueryQuiz::class);
 
-        $this
-            ->signIn()
-            ->post("/quizzes/{$qq->quiz_id}/queries/{$qq->query_id}")
+        $user = create(User::class);
 
+        $this
+            ->signIn($user)
+            ->post("/quizzes/{$qq->quiz_id}/queries/{$qq->query_id}", [
+                'sql' => $qq->qquery->sql,
+            ])
         ;
+
+        $this->assertDatabaseHas('attempts', [
+            'query_quiz_id' => $qq->id,
+            'user_id' => $user->id,
+            'valid' => true,
+        ]);
     }
 }

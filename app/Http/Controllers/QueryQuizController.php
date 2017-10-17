@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Query;
 use App\Quiz;
 use App\QueryQuiz;
+use App\Attempt;
 use Illuminate\Http\Request;
+use Auth;
 
 class QueryQuizController extends Controller
 {
@@ -59,9 +61,11 @@ class QueryQuizController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function show(int $quiz, int $query, Request $request)
+    public function show(int $quiz, int $query, Request $request, $qq = null)
     {
-        $qq = $this->getQueryJoinQueryQuiz($query, $quiz);
+        if (is_null($qq)) {
+            $qq = $this->getQueryJoinQueryQuiz($query, $quiz);
+        }
 
         return view('quizzes.queries.show', [
             'title' => "Quiz Query #{$qq->query_id}: {$qq->description}",
@@ -79,9 +83,20 @@ class QueryQuizController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function attempt($quiz, $query, Request $request)
+    public function attempt(int $quiz, int $query, Request $request)
     {
+        $qq = $this->getQueryJoinQueryQuiz($query, $quiz);
 
+        if ($qq->sql == $request->sql) {
+            Attempt::create([
+                'query_quiz_id' => $qq->id,
+                'user_id' => Auth::user()->id,
+                'sql' => $request->sql,
+                'valid' => true,
+            ]);
+        }
+
+        return $this->show($quiz, $query, $request, $qq);
     }
 
     /**

@@ -14,7 +14,7 @@ $factory->define(App\Connection::class, function (Faker $faker) {
 
     config(["database.connections.$name" => $config]);
 
-    Artisan::call('migrate', ['--database' => $name]);
+    Artisan::call('migrate:fresh', ['--database' => $name]);
 
     return [
         'name' => $name,
