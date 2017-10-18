@@ -13,6 +13,8 @@
 
 Route::view('/', 'welcome', ['title' => 'Query Quizzer Welcome']);
 
+Route::name('login')->get('/login', '\\'.Route::getRoutes()->getByName('shibboleth-login')->getActionName());
+
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('connections', 'ConnectionController');
     Route::resource('queries', 'QueryController');
