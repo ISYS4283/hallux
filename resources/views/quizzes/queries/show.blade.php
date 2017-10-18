@@ -30,13 +30,13 @@
             @empty ($diff)
                 <thead>
                     <tr>
-                    @foreach ($expectedRows[0] as $name => $column)
+                    @foreach ($expectedRows[0] ?? [] as $name => $column)
                         <th>{{ $name }}</th>
                     @endforeach
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($expectedRows as $row)
+                    @foreach($expectedRows ?? [] as $row)
                         <tr>
                             @foreach($row as $column)
                                 <td>{{ $column }}</td>

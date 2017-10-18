@@ -72,7 +72,7 @@ class QueryQuizController extends Controller
         return view('quizzes.queries.show', [
             'title' => "Quiz Query #{$qq->query_id}: {$qq->description}",
             'qq' => $qq,
-            'expectedRows' => $qq->data()['rows'],
+            'expectedRows' => $qq->data()['rows'] ?? [],
             'request' => $request,
         ]);
     }
@@ -88,7 +88,7 @@ class QueryQuizController extends Controller
     public function attempt(int $quiz, int $query, Request $request)
     {
         $qq = $this->getQueryJoinQueryQuiz($query, $quiz);
-        $expectedRows = $qq->data()['rows'];
+        $expectedRows = $qq->data()['rows'] ?? [];
 
         $queryAttempt = clone $qq;
         $queryAttempt->sql = $request->sql;

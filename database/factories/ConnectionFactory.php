@@ -9,12 +9,10 @@ $factory->define(App\Connection::class, function (Faker $faker) {
         'driver' => 'sqlite',
         'database' => ':memory:',
         'prefix' => '',
-        'host' => $faker->domainName,
+        'host' => "$name.example.org",
     ];
 
     config(["database.connections.$name" => $config]);
-
-    Artisan::call('migrate:fresh', ['--database' => $name]);
 
     return [
         'name' => $name,
