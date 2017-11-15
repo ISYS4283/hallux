@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Connection;
 use App\Policies\ConnectionPolicy;
+use App\Query;
+use App\Policies\QueryPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -16,6 +18,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Connection::class => ConnectionPolicy::class,
+        Query::class => QueryPolicy::class,
     ];
 
     /**

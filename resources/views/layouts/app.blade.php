@@ -10,7 +10,9 @@
 
 @section('navbar')
     <li><a href="{{ route('quizzes.index') }}">Quizzes</a></li>
-    <li><a href="{{ route('queries.index') }}">Queries</a></li>
+    @can('index', App\Query::class)
+        <li><a href="{{ route('queries.index') }}">Queries</a></li>
+    @endcan
     @can('index', App\Connection::class)
         <li><a href="{{ route('connections.index') }}">Connections</a></li>
     @endcan

@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 
 class QueryController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Query::class);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,6 +21,8 @@ class QueryController extends Controller
      */
     public function index()
     {
+        $this->authorize('index', Query::class);
+
         $queries = Query::with('connection')->get();
 
         return view('queries.index', compact('queries'));
