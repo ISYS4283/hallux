@@ -8,6 +8,8 @@ use App\Connection;
 use App\Policies\ConnectionPolicy;
 use App\Query;
 use App\Policies\QueryPolicy;
+use App\Quiz;
+use App\Policies\QuizPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         Connection::class => ConnectionPolicy::class,
         Query::class => QueryPolicy::class,
+        Quiz::class => QuizPolicy::class,
     ];
 
     /**

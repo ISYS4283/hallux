@@ -59,9 +59,9 @@ class QuizTest extends TestCase
         ;
     }
 
-    public function test_can_create_quiz()
+    public function test_admin_can_create_quiz()
     {
-        $this->signIn();
+        $this->signInAdmin();
 
         $quiz = make(Quiz::class);
 
@@ -76,9 +76,22 @@ class QuizTest extends TestCase
         ;
     }
 
-    public function test_can_add_query_to_quiz()
+    public function test_user_can_not_create_quiz()
     {
+        $this->withExceptionHandling();
         $this->signIn();
+
+        $quiz = make(Quiz::class);
+
+        $this
+            ->post('/quizzes', $quiz->toArray())
+            ->assertStatus(403)
+        ;
+    }
+
+    public function test_admin_can_add_query_to_quiz()
+    {
+        $this->signInAdmin();
 
         $query = create(Query::class);
 
@@ -94,6 +107,23 @@ class QuizTest extends TestCase
         $this
             ->get($response->headers->get('Location'))
             ->assertSeeText($query->description)
+        ;
+    }
+
+    public function test_user_can_not_add_query_to_quiz()
+    {
+        $this->withExceptionHandling();
+        $this->signIn();
+
+        $query = create(Query::class);
+
+        $quiz = create(Quiz::class);
+
+        $this
+            ->post("/quizzes/{$quiz->id}/queries", [
+                'query_id' => $query->id,
+            ])
+            ->assertStatus(403)
         ;
     }
 }

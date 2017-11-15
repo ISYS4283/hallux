@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class QuizController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Quiz::class);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,6 +19,8 @@ class QuizController extends Controller
      */
     public function index()
     {
+        $this->authorize('index', Quiz::class);
+
         return view('quizzes.index', [
             'title' => 'Quizzes',
             'quizzes' => Quiz::all(),

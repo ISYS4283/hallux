@@ -13,6 +13,13 @@ use App\Validators\ResultSetComparator;
 
 class QueryQuizController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Quiz::class, null, [
+            'except' => ['show'],
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -21,6 +28,8 @@ class QueryQuizController extends Controller
      */
     public function index(Quiz $quiz)
     {
+        $this->authorize('index', Quiz::class);
+
         return redirect(route('quizzes.show', $quiz));
     }
 
@@ -69,6 +78,10 @@ class QueryQuizController extends Controller
             $qq = $this->getQueryJoinQueryQuiz($query, $quiz);
         }
 
+        $temp = new Quiz;
+        $temp->id = $quiz;
+        $this->authorize('view', $temp);
+
         return view('quizzes.queries.show', [
             'title' => "Quiz Query #{$qq->query_id}: {$qq->description}",
             'qq' => $qq,
@@ -87,6 +100,10 @@ class QueryQuizController extends Controller
      */
     public function attempt(int $quiz, int $query, Request $request)
     {
+        $temp = new Quiz;
+        $temp->id = $quiz;
+        $this->authorize('attempt', $temp);
+
         $qq = $this->getQueryJoinQueryQuiz($query, $quiz);
         $expectedRows = $qq->data()['rows'] ?? [];
 
