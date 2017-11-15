@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use StudentAffairsUwm\Shibboleth\Entitlement;
 
 class User extends Authenticatable
 {
@@ -30,5 +31,10 @@ class User extends Authenticatable
     public function attempts()
     {
         return $this->hasMany(Attempt::class);
+    }
+
+    public function isAdmin() : bool
+    {
+        return Entitlement::has(config('shibboleth.admin'));
     }
 }

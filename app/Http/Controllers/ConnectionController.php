@@ -13,6 +13,7 @@ class ConnectionController extends Controller
     public function __construct(ConnectionTemplateRepository $templateRepository)
     {
         $this->templateRepository = $templateRepository;
+        $this->authorizeResource(Connection::class);
     }
 
     /**
@@ -22,6 +23,8 @@ class ConnectionController extends Controller
      */
     public function index()
     {
+        $this->authorize('index', Connection::class);
+
         $data = [
             'title' => 'Connections Available',
             'connections' => Connection::all(),

@@ -2,6 +2,8 @@
 
 return array(
 
+    'admin' => env('QQ_ADMIN_ENTITLEMENT'),
+
     /*
     |--------------------------------------------------------------------------
     | Views / Endpoints
