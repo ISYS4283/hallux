@@ -62,7 +62,8 @@ class QuizController extends Controller
     public function show(Quiz $quiz)
     {
         $completed = Attempt::where('user_id', Auth::user()->id)
-            ->where('quiz_id', $quiz->id)->get();
+            ->where('quiz_id', $quiz->id)
+            ->where('valid', true)->get();
 
         $queries = $quiz->queries->map(function ($query) use ($completed) {
             $query->completed = false;
@@ -87,8 +88,8 @@ class QuizController extends Controller
         }
 
         $points = 0;
-        foreach ($completed as $query) {
-            $points += $query->qq->points;
+        foreach ($completed as $attempt) {
+            $points += $attempt->qq->points;
         }
 
         $total = 0;
