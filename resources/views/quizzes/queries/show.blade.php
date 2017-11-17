@@ -92,7 +92,7 @@
 @endsection
 
 @push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js" type="text/javascript" charset="utf-8"></script>
     <script>
         var editor = ace.edit("sql");
         editor.setOptions({
