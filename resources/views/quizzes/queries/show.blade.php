@@ -15,7 +15,9 @@
 
     <div class="pull-right">
         <a href="{{ route('quizzes.show', $qq->quiz_id) }}" class="btn btn-default">Back to Quiz</a>
-        <a href="{{ route('quizzes.queries.edit', [$qq->quiz_id, $qq->query_id]) }}" class="btn btn-default">Edit <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+        @can('update', $qq)
+            <a href="{{ route('quizzes.queries.edit', [$qq->quiz_id, $qq->query_id]) }}" class="btn btn-default">Edit <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+        @endcan
     </div>
 
     <h1>Query #{{ $qq->query_id }}</h1>

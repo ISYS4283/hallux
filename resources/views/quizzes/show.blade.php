@@ -6,7 +6,9 @@
 
 @section('content')
     <div class="pull-right">
-        <a href="{{ route('quizzes.edit', $quiz) }}" class="btn btn-default">Edit <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+        @can('update', $quiz)
+            <a href="{{ route('quizzes.edit', $quiz) }}" class="btn btn-default">Edit <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+        @endcan
     </div>
 
     <h1>{{ $quiz->title }}</h1>

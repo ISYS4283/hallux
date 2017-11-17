@@ -6,7 +6,9 @@
 
 @section('content')
     <div class="pull-right">
-        <a href="{{ route('quizzes.create') }}" class="btn btn-success">Create <i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+        @can('create', App\Quiz::class)
+            <a href="{{ route('quizzes.create') }}" class="btn btn-success">Create <i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+        @endcan
     </div>
 
     <h1>Quizzes</h1>
