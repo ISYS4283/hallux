@@ -22,6 +22,6 @@ class Attempt extends Model
 
     public function qq()
     {
-        return $this->belongsTo(QueryQuiz::class);
+        return $this->belongsTo(QueryQuiz::class, 'query_quiz_id');
     }
 }
