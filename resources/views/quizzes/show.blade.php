@@ -13,6 +13,8 @@
 
     <h1>{{ $quiz->title }}</h1>
 
+    {!! $progressBar !!}
+
     @foreach ($queries as $query)
         <div class="panel panel-{{ $query->completed ? 'success' : 'default' }}">
             <div class="panel-heading">

@@ -6,6 +6,7 @@ use App\Quiz;
 use Illuminate\Http\Request;
 use Auth;
 use App\Attempt;
+use jpuck\php\bootstrap\ProgressBar\ProgressBar;
 
 class QuizController extends Controller
 {
@@ -75,7 +76,29 @@ class QuizController extends Controller
             'title' => "Quiz #{$quiz->id}: {$quiz->title}",
             'quiz' => $quiz,
             'queries' => $queries,
+            'progressBar' => $this->getProgressBar($completed, $queries),
         ]);
+    }
+
+    protected function getProgressBar($completed, $queries) : ProgressBar
+    {
+        if ($completed->isEmpty()) {
+            return new ProgressBar(0);
+        }
+
+        $points = 0;
+        foreach ($completed as $query) {
+            $points += $query->qq->points;
+        }
+
+        $total = 0;
+        foreach ($queries as $query) {
+            $total += $query->pivot->points;
+        }
+
+        $percent = (int)round(($points / $total) * 100);
+
+        return new ProgressBar($percent);
     }
 
     /**
