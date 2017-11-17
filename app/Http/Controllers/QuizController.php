@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Quiz;
 use Illuminate\Http\Request;
+use Auth;
+use App\Attempt;
 
 class QuizController extends Controller
 {
@@ -58,9 +60,21 @@ class QuizController extends Controller
      */
     public function show(Quiz $quiz)
     {
+        $completed = Attempt::where('user_id', Auth::user()->id)
+            ->where('quiz_id', $quiz->id)->get();
+
+        $queries = $quiz->queries->map(function ($query) use ($completed) {
+            $query->completed = false;
+            if ($completed->contains('query_id', $query->id)) {
+                $query->completed = true;
+            }
+            return $query;
+        });
+
         return view('quizzes.show', [
             'title' => "Quiz #{$quiz->id}: {$quiz->title}",
             'quiz' => $quiz,
+            'queries' => $queries,
         ]);
     }
 

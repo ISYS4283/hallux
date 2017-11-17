@@ -8,6 +8,8 @@ class Attempt extends Model
 {
     protected $fillable = [
         'query_quiz_id',
+        'query_id',
+        'quiz_id',
         'user_id',
         'sql',
         'valid',

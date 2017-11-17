@@ -13,8 +13,8 @@
 
     <h1>{{ $quiz->title }}</h1>
 
-    @foreach ($quiz->queries as $query)
-        <div class="panel panel-default">
+    @foreach ($queries as $query)
+        <div class="panel panel-{{ $query->completed ? 'success' : 'default' }}">
             <div class="panel-heading">
                 <a href="{{ route('quizzes.queries.show', [$quiz->id, $query->id]) }}">Query #{{$query->id}}</a>
                 <br>

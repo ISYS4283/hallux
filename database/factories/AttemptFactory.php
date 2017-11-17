@@ -3,10 +3,11 @@
 use Faker\Generator as Faker;
 
 $factory->define(App\Attempt::class, function (Faker $faker) {
+    $qq = factory(App\QueryQuiz::class)->create();
     return [
-        'query_quiz_id' => function(){
-            return factory(App\QueryQuiz::class)->create()->id;
-        },
+        'query_quiz_id' => $qq->id,
+        'query_id' => $qq->query_id,
+        'quiz_id' => $qq->quiz_id,
         'user_id' => function(){
             return factory(App\User::class)->create()->id;
         },

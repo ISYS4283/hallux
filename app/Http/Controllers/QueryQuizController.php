@@ -118,6 +118,8 @@ class QueryQuizController extends Controller
         if (true === $match) {
             Attempt::create([
                 'query_quiz_id' => $qq->id,
+                'query_id' => $query,
+                'quiz_id' => $quiz,
                 'user_id' => Auth::user()->id,
                 'sql' => $request->sql,
                 'valid' => true,

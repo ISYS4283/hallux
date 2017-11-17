@@ -19,6 +19,10 @@ class CreateAttemptsTable extends Migration
 
             $table->unsignedInteger('query_quiz_id');
             $table->foreign('query_quiz_id')->references('id')->on('query_quiz');
+            $table->unsignedInteger('query_id');
+            $table->foreign('query_id')->references('id')->on('queries');
+            $table->unsignedInteger('quiz_id');
+            $table->foreign('quiz_id')->references('id')->on('quizzes');
 
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
