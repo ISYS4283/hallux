@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a2022ef5842e6c2dbf1629db5ac650f5",
+    "content-hash": "7753a6dc0dc8387f4b4fa44136e3b0d5",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1454,16 +1454,16 @@
         },
         {
             "name": "razorbacks/laravel-shibboleth",
-            "version": "2.2.6",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/razorbacks/laravel-shibboleth.git",
-                "reference": "e2aca5eacde68e9ae1a328e54d111b4ca1515d97"
+                "reference": "4a9dbf1ca0054790d21a7c356c6a9d78710830c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/razorbacks/laravel-shibboleth/zipball/e2aca5eacde68e9ae1a328e54d111b4ca1515d97",
-                "reference": "e2aca5eacde68e9ae1a328e54d111b4ca1515d97",
+                "url": "https://api.github.com/repos/razorbacks/laravel-shibboleth/zipball/4a9dbf1ca0054790d21a7c356c6a9d78710830c5",
+                "reference": "4a9dbf1ca0054790d21a7c356c6a9d78710830c5",
                 "shasum": ""
             },
             "require": {
@@ -1509,7 +1509,7 @@
                 }
             ],
             "description": "Enable basic Shibboleth support for Laravel 5.x",
-            "time": "2017-10-05T15:13:50+00:00"
+            "time": "2017-11-15T17:50:33+00:00"
         },
         {
             "name": "razorbacks/style",
