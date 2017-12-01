@@ -15,4 +15,15 @@ class Quiz extends Model
     {
         return $this->belongsToMany(Query::class)->withPivot('points')->using(QueryQuiz::class);
     }
+
+    public function getPossiblePoints() : int
+    {
+        $total = 0;
+
+        foreach ($this->queries()->get() as $query) {
+            $total += $query->pivot->points;
+        }
+
+        return $total;
+    }
 }

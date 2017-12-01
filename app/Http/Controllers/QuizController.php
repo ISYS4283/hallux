@@ -82,11 +82,11 @@ class QuizController extends Controller
             'title' => "Quiz #{$quiz->id}: {$quiz->title}",
             'quiz' => $quiz,
             'queries' => $queries,
-            'progressBar' => $this->getProgressBar($completed, $queries),
+            'progressBar' => $this->getProgressBar($quiz, $completed),
         ]);
     }
 
-    protected function getProgressBar($completed, $queries) : ProgressBar
+    protected function getProgressBar(Quiz $quiz, $completed) : ProgressBar
     {
         if ($completed->isEmpty()) {
             return new ProgressBar(0);
@@ -97,12 +97,7 @@ class QuizController extends Controller
             $points += $attempt->qq->points;
         }
 
-        $total = 0;
-        foreach ($queries as $query) {
-            $total += $query->pivot->points;
-        }
-
-        $percent = (int)round(($points / $total) * 100);
+        $percent = (int)round(($points / $quiz->getPossiblePoints()) * 100);
 
         return new ProgressBar($percent);
     }
