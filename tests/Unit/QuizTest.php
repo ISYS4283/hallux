@@ -22,4 +22,16 @@ class QuizTest extends TestCase
 
         $this->assertSame($expected, $quiz->getPossiblePoints());
     }
+
+    public function test_can_determine_if_on_blackboard()
+    {
+        $quizOff = create(Quiz::class);
+        $this->assertFalse($quizOff->isOnBlackboard());
+
+        $quizOn = create(Quiz::class, [
+            'blackboard_course_id' => '_123_1',
+            'blackboard_gradebook_column_id' => '_123_1',
+        ]);
+        $this->assertTrue($quizOn->isOnBlackboard());
+    }
 }

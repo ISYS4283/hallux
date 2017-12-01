@@ -26,4 +26,9 @@ class Quiz extends Model
 
         return $total;
     }
+
+    public function isOnBlackboard() : bool
+    {
+        return isset($this->attributes['blackboard_gradebook_column_id']);
+    }
 }
