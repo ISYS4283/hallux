@@ -18,6 +18,8 @@ class CreateQuizzesTable extends Migration
             $table->timestamps();
 
             $table->string('title');
+            $table->string('blackboard_course_id')->nullable();
+            $table->string('blackboard_gradebook_column_id')->nullable();
         });
     }
 

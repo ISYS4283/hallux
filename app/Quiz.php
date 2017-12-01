@@ -8,6 +8,7 @@ class Quiz extends Model
 {
     protected $fillable = [
         'title',
+        'blackboard_course_id',
     ];
 
     public function queries()
