@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Attempt;
 use jpuck\php\bootstrap\ProgressBar\ProgressBar;
+use App\Blackboard;
 
 class QuizController extends Controller
 {
@@ -49,6 +50,10 @@ class QuizController extends Controller
     public function store(Request $request)
     {
         $quiz = Quiz::create($request->all());
+
+        if (isset($quiz->blackboard_course_id)) {
+            (new Blackboard($quiz))->createGradebookColumn();
+        }
 
         return redirect(route('quizzes.show', $quiz));
     }
