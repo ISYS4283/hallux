@@ -3,6 +3,7 @@
 namespace App;
 
 use razorbacks\blackboard\rest\Api;
+use Exception;
 
 class Blackboard
 {
@@ -37,4 +38,23 @@ class Blackboard
         $this->quiz->blackboard_gradebook_column_id = $gradeColumn['id'];
         $this->quiz->save();
     }
+
+    public function syncPossiblePoints()
+    {
+        if (!$this->quiz->isOnBlackboard()) {
+            throw new NotOnBlackboard;
+        }
+
+        $courseId = $this->quiz->blackboard_course_id;
+        $columnId = $this->quiz->blackboard_gradebook_column_id;
+        $gradeColumn = [
+            'score' => [
+                'possible' => $this->quiz->getPossiblePoints(),
+            ],
+        ];
+
+        $this->api->patch("/courses/$courseId/gradebook/columns/$columnId", $gradeColumn);
+    }
 }
+
+class NotOnBlackboard extends Exception {}

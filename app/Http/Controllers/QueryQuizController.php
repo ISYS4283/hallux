@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Auth;
 use View;
 use App\Validators\ResultSetComparator;
+use App\Blackboard;
 
 class QueryQuizController extends Controller
 {
@@ -55,11 +56,16 @@ class QueryQuizController extends Controller
     {
         $query = Query::findOrFail($request->query_id);
 
+        // default 1 point
         if ($request->has('points')) {
             $data = ['points' => $request->points];
         }
 
         $quiz->queries()->attach($query, $data ?? []);
+
+        if ($quiz->isOnBlackboard()) {
+            (new Blackboard($quiz))->syncPossiblePoints();
+        }
 
         return redirect(route('quizzes.queries.show', [$quiz, $query]));
     }
