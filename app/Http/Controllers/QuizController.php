@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Attempt;
 use jpuck\php\bootstrap\ProgressBar\ProgressBar;
+use App\Blackboard;
+use App\User;
 
 class QuizController extends Controller
 {
@@ -50,6 +52,10 @@ class QuizController extends Controller
     {
         $quiz = Quiz::create($request->all());
 
+        if (isset($quiz->blackboard_course_id)) {
+            (new Blackboard($quiz))->createGradebookColumn();
+        }
+
         return redirect(route('quizzes.show', $quiz));
     }
 
@@ -61,9 +67,9 @@ class QuizController extends Controller
      */
     public function show(Quiz $quiz)
     {
-        $completed = Attempt::where('user_id', Auth::user()->id)
-            ->where('quiz_id', $quiz->id)
-            ->where('valid', true)->get();
+        $user = Auth::user();
+        $completed = null;
+        $points = $quiz->getPointsForUser($user, $completed);
 
         $queries = $quiz->queries->map(function ($query) use ($completed) {
             $query->completed = false;
@@ -77,29 +83,34 @@ class QuizController extends Controller
             'title' => "Quiz #{$quiz->id}: {$quiz->title}",
             'quiz' => $quiz,
             'queries' => $queries,
-            'progressBar' => $this->getProgressBar($completed, $queries),
+            'progressBar' => $this->getProgressBar($points, $quiz->getPossiblePoints()),
         ]);
     }
 
-    protected function getProgressBar($completed, $queries) : ProgressBar
+    protected function getProgressBar(int $numerator, int $denominator) : ProgressBar
     {
-        if ($completed->isEmpty()) {
+        if (empty($numerator)) {
             return new ProgressBar(0);
         }
 
-        $points = 0;
-        foreach ($completed as $attempt) {
-            $points += $attempt->qq->points;
+        if (empty($denominator)) {
+            return new ProgressBar(0);
         }
 
-        $total = 0;
-        foreach ($queries as $query) {
-            $total += $query->pivot->points;
-        }
-
-        $percent = (int)round(($points / $total) * 100);
+        $percent = (int)round(($numerator / $denominator) * 100);
 
         return new ProgressBar($percent);
+    }
+
+    public function blackboard(Quiz $quiz)
+    {
+        $this->authorize('attempt', $quiz);
+
+        (new Blackboard($quiz))->postGradeForStudent(Auth::user());
+
+        flash('Your grade was successfully posted to blackboard!')->success();
+
+        return redirect('/');
     }
 
     /**

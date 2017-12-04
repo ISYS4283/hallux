@@ -37,4 +37,9 @@ class User extends Authenticatable
     {
         return Entitlement::has(config('shibboleth.admin'));
     }
+
+    public function getUsername() : string
+    {
+        return strstr($this->attributes['email'], '@', true);
+    }
 }

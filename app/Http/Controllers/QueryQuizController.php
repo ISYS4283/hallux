@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Auth;
 use View;
 use App\Validators\ResultSetComparator;
+use App\Blackboard;
 
 class QueryQuizController extends Controller
 {
@@ -55,11 +56,16 @@ class QueryQuizController extends Controller
     {
         $query = Query::findOrFail($request->query_id);
 
+        // default 1 point
         if ($request->has('points')) {
             $data = ['points' => $request->points];
         }
 
         $quiz->queries()->attach($query, $data ?? []);
+
+        if ($quiz->isOnBlackboard()) {
+            (new Blackboard($quiz))->syncPossiblePoints();
+        }
 
         return redirect(route('quizzes.queries.show', [$quiz, $query]));
     }
@@ -114,21 +120,25 @@ class QueryQuizController extends Controller
         View::share('actualRows', $actualRows);
         View::share('error', $data['error'] ?? null);
 
-        $match = (new ResultSetComparator)->match($expectedRows, $actualRows);
-        if (true === $match) {
-            Attempt::create([
-                'query_quiz_id' => $qq->id,
-                'query_id' => $query,
-                'quiz_id' => $quiz,
-                'user_id' => Auth::user()->id,
-                'sql' => $request->sql,
-                'valid' => true,
-            ]);
+        $attempt = Attempt::make([
+            'query_quiz_id' => $qq->id,
+            'query_id' => $query,
+            'quiz_id' => $quiz,
+            'user_id' => Auth::user()->id,
+            'sql' => $request->sql,
+        ]);
 
+        $match = (new ResultSetComparator)->match($expectedRows, $actualRows);
+
+        if (true === $match) {
+            $attempt->valid = true;
             View::share('success', "Congratulations, that's a valid solution!");
         } else {
+            $attempt->valid = false;
             View::share('diff', $match);
         }
+
+        $attempt->save();
 
         return $this->show($quiz, $query, $request, $qq);
     }
