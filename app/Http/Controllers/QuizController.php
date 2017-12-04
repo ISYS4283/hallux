@@ -68,9 +68,8 @@ class QuizController extends Controller
     public function show(Quiz $quiz)
     {
         $user = Auth::user();
-        $completed = Attempt::where('user_id', $user->id)
-            ->where('quiz_id', $quiz->id)
-            ->where('valid', true)->get();
+        $completed = null;
+        $points = $quiz->getPointsForUser($user, $completed);
 
         $queries = $quiz->queries->map(function ($query) use ($completed) {
             $query->completed = false;
@@ -84,23 +83,21 @@ class QuizController extends Controller
             'title' => "Quiz #{$quiz->id}: {$quiz->title}",
             'quiz' => $quiz,
             'queries' => $queries,
-            'progressBar' => $this->getProgressBar($quiz, $user),
+            'progressBar' => $this->getProgressBar($points, $quiz->getPossiblePoints()),
         ]);
     }
 
-    protected function getProgressBar(Quiz $quiz, User $user) : ProgressBar
+    protected function getProgressBar(int $numerator, int $denominator) : ProgressBar
     {
-        $total = $quiz->getPossiblePoints();
-        if (empty($total)) {
+        if (empty($numerator)) {
             return new ProgressBar(0);
         }
 
-        $earned = $quiz->getPointsForUser($user);
-        if (empty($earned)) {
+        if (empty($denominator)) {
             return new ProgressBar(0);
         }
 
-        $percent = (int)round(($earned / $total) * 100);
+        $percent = (int)round(($numerator / $denominator) * 100);
 
         return new ProgressBar($percent);
     }
