@@ -28,4 +28,20 @@
             </div>
         </div>
     @endforeach
+
+    @if ($quiz->isOnBlackboard())
+        <div class="panel panel-default">
+            <div class="panel-body">
+                {!! $progressBar !!}
+
+                <p class="lead">
+                    Once you are happy with your score, then post your grade to blackboard.
+                </p>
+
+                <div>
+                    <a href="{{ route('quizzes.blackboard', $quiz) }}" class="btn btn-primary">Post to Blackboard</a>
+                </div>
+            </div>
+        </div>
+    @endif
 @endsection

@@ -55,6 +55,23 @@ class Blackboard
 
         $this->api->patch("/courses/$courseId/gradebook/columns/$columnId", $gradeColumn);
     }
+
+    public function postGradeForStudent(User $user)
+    {
+        if (!$this->quiz->isOnBlackboard()) {
+            throw new NotOnBlackboard;
+        }
+
+        $courseId = $this->quiz->blackboard_course_id;
+        $columnId = $this->quiz->blackboard_gradebook_column_id;
+        $username = $user->getUsername();
+        $score = $this->quiz->getPointsForUser($user);
+
+        $endpoint = "/courses/$courseId/gradebook/columns/$columnId/users/userName:$username";
+        $this->api->patch($endpoint, [
+            'score' => $score,
+        ]);
+    }
 }
 
 class NotOnBlackboard extends Exception {}

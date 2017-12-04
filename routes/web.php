@@ -19,6 +19,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('connections', 'ConnectionController');
     Route::resource('queries', 'QueryController');
     Route::post('/queries/create', 'QueryController@create');
+    Route::name('quizzes.blackboard')->get('/quizzes/{quiz}/blackboard', 'QuizController@blackboard');
     Route::resource('quizzes', 'QuizController');
     Route::resource('quizzes.queries', 'QueryQuizController');
     Route::name('quizzes.queries.attempt')->post('/quizzes/{quiz}/queries/{query}', 'QueryQuizController@attempt');

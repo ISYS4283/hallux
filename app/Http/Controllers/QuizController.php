@@ -102,6 +102,17 @@ class QuizController extends Controller
         return new ProgressBar($percent);
     }
 
+    public function blackboard(Quiz $quiz)
+    {
+        $this->authorize('attempt', $quiz);
+
+        (new Blackboard($quiz))->postGradeForStudent(Auth::user());
+
+        flash('Your grade was successfully posted to blackboard!')->success();
+
+        return redirect('/');
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
