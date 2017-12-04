@@ -2,6 +2,7 @@
 
 @push('head')
     <meta name="description" content="{{ $title }}">
+    {!! jpuck\php\bootstrap\ProgressBar\ProgressBar::getCssEmbed() !!}
 @endpush
 
 @section('content')

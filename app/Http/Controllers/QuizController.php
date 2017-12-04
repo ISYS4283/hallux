@@ -8,6 +8,7 @@ use Auth;
 use App\Attempt;
 use jpuck\php\bootstrap\ProgressBar\ProgressBar;
 use App\Blackboard;
+use App\User;
 
 class QuizController extends Controller
 {
@@ -66,7 +67,8 @@ class QuizController extends Controller
      */
     public function show(Quiz $quiz)
     {
-        $completed = Attempt::where('user_id', Auth::user()->id)
+        $user = Auth::user();
+        $completed = Attempt::where('user_id', $user->id)
             ->where('quiz_id', $quiz->id)
             ->where('valid', true)->get();
 
@@ -82,22 +84,23 @@ class QuizController extends Controller
             'title' => "Quiz #{$quiz->id}: {$quiz->title}",
             'quiz' => $quiz,
             'queries' => $queries,
-            'progressBar' => $this->getProgressBar($quiz, $completed),
+            'progressBar' => $this->getProgressBar($quiz, $user),
         ]);
     }
 
-    protected function getProgressBar(Quiz $quiz, $completed) : ProgressBar
+    protected function getProgressBar(Quiz $quiz, User $user) : ProgressBar
     {
-        if ($completed->isEmpty()) {
+        $total = $quiz->getPossiblePoints();
+        if (empty($total)) {
             return new ProgressBar(0);
         }
 
-        $points = 0;
-        foreach ($completed as $attempt) {
-            $points += $attempt->qq->points;
+        $earned = $quiz->getPointsForUser($user);
+        if (empty($earned)) {
+            return new ProgressBar(0);
         }
 
-        $percent = (int)round(($points / $quiz->getPossiblePoints()) * 100);
+        $percent = (int)round(($earned / $total) * 100);
 
         return new ProgressBar($percent);
     }
