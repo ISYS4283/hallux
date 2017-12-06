@@ -20,6 +20,8 @@
                     <a href="{{ route('quizzes.show', $quiz) }}">{{ $quiz->title }}</a>
                 </div>
                 <div class="panel-body">
+                    <strong>Points</strong>: {{ $quiz->getPossiblePoints() }}
+                    <br>
                     <strong>Open</strong>: {{ isset($quiz->open) ? $quiz->open->timezone('America/Chicago') : 'Not Scheduled' }}
                     <br>
                     <strong>Due</strong>: {{ isset($quiz->closed) ? $quiz->closed->timezone('America/Chicago') : 'Not Scheduled' }}
