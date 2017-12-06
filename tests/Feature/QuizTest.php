@@ -25,6 +25,20 @@ class QuizTest extends TestCase
         }
     }
 
+    public function test_user_cannot_view_unscheduled_quiz()
+    {
+        $quiz = create(Quiz::class, [
+            'open' => null,
+        ]);
+
+        $this
+            ->withExceptionHandling()
+            ->signIn()
+            ->get("/quizzes/{$quiz->id}")
+            ->assertStatus(403)
+        ;
+    }
+
     public function test_can_show_quiz()
     {
         $this->signIn();
