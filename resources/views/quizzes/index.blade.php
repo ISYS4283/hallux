@@ -13,9 +13,18 @@
 
     <h1>Quizzes</h1>
 
-    <ul>
-        @foreach ($quizzes as $quiz)
-            <li><a href="{{ route('quizzes.show', $quiz) }}">{{ $quiz->title }}</a></li>
-        @endforeach
-    </ul>
+    @foreach ($quizzes as $quiz)
+        @can('view', $quiz)
+            <div class="panel panel-{{ $quiz->isOpen() ? 'default' : 'danger' }}">
+                <div class="panel-heading">
+                    <a href="{{ route('quizzes.show', $quiz) }}">{{ $quiz->title }}</a>
+                </div>
+                <div class="panel-body">
+                    <strong>Open</strong>: {{ isset($quiz->open) ? $quiz->open->timezone('America/Chicago') : 'Not Scheduled' }}
+                    <br>
+                    <strong>Due</strong>: {{ isset($quiz->closed) ? $quiz->closed->timezone('America/Chicago') : 'Not Scheduled' }}
+                </div>
+            </div>
+        @endcan
+    @endforeach
 @endsection
