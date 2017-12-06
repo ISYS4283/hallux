@@ -135,6 +135,24 @@ class QuizTest extends TestCase
         ;
     }
 
+    public function test_admin_can_create_quiz_with_datetime_local()
+    {
+        $this->signInAdmin();
+
+        $quiz = make(Quiz::class)->toArray();
+        $quiz['open'] = '2017-12-06T21:00';
+
+        $response = $this
+            ->post('/quizzes', $quiz)
+            ->assertStatus(302)
+        ;
+
+        $this
+            ->get($response->headers->get('Location'))
+            ->assertSeeText($quiz['title'])
+        ;
+    }
+
     public function test_user_can_not_create_quiz()
     {
         $this->withExceptionHandling();
