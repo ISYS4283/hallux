@@ -8,6 +8,7 @@ use Request;
 use Auth;
 use Mail;
 use App\User;
+use App;
 
 class Handler extends ExceptionHandler
 {
@@ -40,6 +41,10 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+        if (App::Environment() === 'testing') {
+            return;
+        }
+
         $user = Auth::user();
         if ($user instanceof User) {
             $user = json_encode($user->toArray(), JSON_PRETTY_PRINT);
