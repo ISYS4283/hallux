@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Quiz;
 use App\Query;
 use App\QueryQuiz;
+use Carbon\Carbon;
 
 class QuizTest extends TestCase
 {
@@ -23,6 +24,47 @@ class QuizTest extends TestCase
         foreach ($quizzes as $quiz) {
             $response->assertSeeText($quiz->title);
         }
+    }
+
+    public function test_user_cannot_view_unscheduled_quiz()
+    {
+        $quiz = create(Quiz::class, [
+            'open' => null,
+        ]);
+
+        $this
+            ->withExceptionHandling()
+            ->signIn()
+            ->get("/quizzes/{$quiz->id}")
+            ->assertStatus(403)
+        ;
+    }
+
+    public function test_user_cannot_view_closed_quiz()
+    {
+        $quiz = create(Quiz::class, [
+            'closed' => (new Carbon)->subHour(),
+        ]);
+
+        $this
+            ->withExceptionHandling()
+            ->signIn()
+            ->get("/quizzes/{$quiz->id}")
+            ->assertStatus(403)
+        ;
+    }
+
+    public function test_admin_can_view_closed_quiz()
+    {
+        $quiz = create(Quiz::class, [
+            'closed' => (new Carbon)->subHour(),
+        ]);
+
+        $this
+            ->signInAdmin()
+            ->get("/quizzes/{$quiz->id}")
+            ->assertStatus(200)
+        ;
     }
 
     public function test_can_show_quiz()
@@ -59,6 +101,23 @@ class QuizTest extends TestCase
         ;
     }
 
+    public function test_user_cannot_view_closed_query_quiz()
+    {
+        $quiz = create(Quiz::class, [
+            'closed' => (new Carbon)->subHour(),
+        ]);
+        $qq = create(QueryQuiz::class, [
+            'quiz_id' => $quiz->id,
+        ]);
+
+        $this
+            ->withExceptionHandling()
+            ->signIn()
+            ->get("/quizzes/{$qq->quiz_id}/queries/{$qq->query_id}")
+            ->assertStatus(403)
+        ;
+    }
+
     public function test_admin_can_create_quiz()
     {
         $this->signInAdmin();
@@ -73,6 +132,24 @@ class QuizTest extends TestCase
         $this
             ->get($response->headers->get('Location'))
             ->assertSeeText($quiz->title)
+        ;
+    }
+
+    public function test_admin_can_create_quiz_with_datetime_local()
+    {
+        $this->signInAdmin();
+
+        $quiz = make(Quiz::class)->toArray();
+        $quiz['open'] = '2017-12-06T21:00';
+
+        $response = $this
+            ->post('/quizzes', $quiz)
+            ->assertStatus(302)
+        ;
+
+        $this
+            ->get($response->headers->get('Location'))
+            ->assertSeeText($quiz['title'])
         ;
     }
 

@@ -9,6 +9,7 @@ use App\Attempt;
 use jpuck\php\bootstrap\ProgressBar\ProgressBar;
 use App\Blackboard;
 use App\User;
+use Carbon\Carbon;
 
 class QuizController extends Controller
 {
@@ -50,13 +51,32 @@ class QuizController extends Controller
      */
     public function store(Request $request)
     {
-        $quiz = Quiz::create($request->all());
+        $data = $request->all();
+
+        $this->castDateTimes($data);
+
+        $quiz = Quiz::create($data);
 
         if (isset($quiz->blackboard_course_id)) {
             (new Blackboard($quiz))->createGradebookColumn();
         }
 
         return redirect(route('quizzes.show', $quiz));
+    }
+
+    protected function castDateTimes(array &$data)
+    {
+        foreach (['open', 'closed'] as $attribute) {
+            if (isset($data[$attribute])) {
+                try {
+                    // ISO8601 UTC
+                    $data[$attribute] = new Carbon($data[$attribute]);
+                } catch (\InvalidArgumentException $e) {
+                    // datetime-local
+                    $data[$attribute] = Carbon::createFromFormat('Y-m-d\TH:i', $data[$attribute])->setTimezone('America/Chicago');
+                }
+            }
+        }
     }
 
     /**

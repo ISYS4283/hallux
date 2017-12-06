@@ -31,6 +31,10 @@ class QuizPolicy
      */
     public function view(User $user, Quiz $quiz)
     {
+        if (!$quiz->isOpen()) {
+            return false;
+        }
+
         return true;
     }
 

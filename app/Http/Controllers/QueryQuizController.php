@@ -16,9 +16,7 @@ class QueryQuizController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Quiz::class, null, [
-            'except' => ['show'],
-        ]);
+        $this->authorizeResource(Quiz::class);
     }
 
     /**
@@ -78,15 +76,11 @@ class QueryQuizController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function show(int $quiz, int $query, Request $request, $qq = null)
+    public function show(Quiz $quiz, int $query, Request $request, $qq = null)
     {
         if (is_null($qq)) {
-            $qq = $this->getQueryJoinQueryQuiz($query, $quiz);
+            $qq = $this->getQueryJoinQueryQuiz($query, $quiz->id);
         }
-
-        $temp = new Quiz;
-        $temp->id = $quiz;
-        $this->authorize('view', $temp);
 
         return view('quizzes.queries.show', [
             'title' => "Quiz Query #{$qq->query_id}: {$qq->description}",
@@ -104,13 +98,11 @@ class QueryQuizController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function attempt(int $quiz, int $query, Request $request)
+    public function attempt(Quiz $quiz, int $query, Request $request)
     {
-        $temp = new Quiz;
-        $temp->id = $quiz;
-        $this->authorize('attempt', $temp);
+        $this->authorize('attempt', $quiz);
 
-        $qq = $this->getQueryJoinQueryQuiz($query, $quiz);
+        $qq = $this->getQueryJoinQueryQuiz($query, $quiz->id);
         $expectedRows = $qq->data()['rows'] ?? [];
 
         $queryAttempt = clone $qq;
@@ -123,7 +115,7 @@ class QueryQuizController extends Controller
         $attempt = Attempt::make([
             'query_quiz_id' => $qq->id,
             'query_id' => $query,
-            'quiz_id' => $quiz,
+            'quiz_id' => $quiz->id,
             'user_id' => Auth::user()->id,
             'sql' => $request->sql,
         ]);

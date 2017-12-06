@@ -23,6 +23,16 @@
         </div>
 
         <div class="form-group">
+            <label class="control-label" for="open">Schedule Open:</label>
+            <input type="datetime-local" class="form-control" id="open" name="open">
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" for="closed">Schedule Close:</label>
+            <input type="datetime-local" class="form-control" id="closed" name="closed">
+        </div>
+
+        <div class="form-group">
             <label class="control-label" for="blackboard_course_id">Blackboard Course ID:</label>
             <input type="text" class="form-control" id="blackboard_course_id" name="blackboard_course_id" placeholder="e.g. _123_1">
         </div>
