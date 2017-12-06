@@ -24,7 +24,7 @@
                 Points: {{ $query->pivot->points }}
             </div>
             <div class="panel-body">
-                {{ $query->description }}
+                {!! nl2br(e($query->description)) !!}
             </div>
         </div>
     @endforeach

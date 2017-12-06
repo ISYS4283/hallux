@@ -23,7 +23,7 @@
     <h1>Query #{{ $qq->query_id }}</h1>
     <p>Points: {{ $qq->points }}</p>
 
-    <p class="lead">{{ $qq->description }}</p>
+    <p class="lead">{!! nl2br(e($qq->description)) !!}</p>
 
     <section>
         <h2>Expected Data</h2>
