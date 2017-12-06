@@ -12,7 +12,7 @@
     <h1>Query #{{ $query->id }}</h1>
     <p>{{ $query->connection->name }}</p>
 
-    <p class="lead">{{ $query->description }}</p>
+    <p class="lead">{!! nl2br(e($query->description)) !!}</p>
 
     <pre class="prettyprint lang-sql linenums">{{ $query->sql }}</pre>
 

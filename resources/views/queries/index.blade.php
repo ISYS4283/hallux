@@ -19,7 +19,7 @@
                 <a href="{{ route('queries.show', $query) }}">Query #{{$query->id}}</a>
             </div>
             <div class="panel-body">
-                <p>{{ $query->description }}</p>
+                <p>{!! nl2br(e($query->description)) !!}</p>
                 <pre class="prettyprint lang-sql linenums">{{ $query->sql }}</pre>
             </div>
             <div class="panel-footer">
