@@ -3,12 +3,20 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Quiz extends Model
 {
     protected $fillable = [
         'title',
+        'open',
+        'closed',
         'blackboard_course_id',
+    ];
+
+    protected $dates = [
+        'open',
+        'closed',
     ];
 
     public function queries()
@@ -49,5 +57,25 @@ class Quiz extends Model
         }
 
         return array_sum($points);
+    }
+
+    public function isOpen() : bool
+    {
+        $open = $this->__get('open');
+        $closed = $this->__get('closed');
+
+        if (empty($open)) {
+            return false;
+        }
+
+        if (empty($closed)) {
+            return true;
+        }
+
+        if ($closed->lt(new Carbon)) {
+            return false;
+        }
+
+        return true;
     }
 }

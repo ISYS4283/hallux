@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Quiz;
 use App\Query;
 use App\QueryQuiz;
+use Carbon\Carbon;
 
 class QuizTest extends TestCase
 {
@@ -36,6 +37,33 @@ class QuizTest extends TestCase
             ->signIn()
             ->get("/quizzes/{$quiz->id}")
             ->assertStatus(403)
+        ;
+    }
+
+    public function test_user_cannot_view_closed_quiz()
+    {
+        $quiz = create(Quiz::class, [
+            'closed' => (new Carbon)->subHour(),
+        ]);
+
+        $this
+            ->withExceptionHandling()
+            ->signIn()
+            ->get("/quizzes/{$quiz->id}")
+            ->assertStatus(403)
+        ;
+    }
+
+    public function test_admin_can_view_closed_quiz()
+    {
+        $quiz = create(Quiz::class, [
+            'closed' => (new Carbon)->subHour(),
+        ]);
+
+        $this
+            ->signInAdmin()
+            ->get("/quizzes/{$quiz->id}")
+            ->assertStatus(200)
         ;
     }
 
@@ -70,6 +98,23 @@ class QuizTest extends TestCase
             ->get("/quizzes/{$qq->quiz_id}/queries/{$qq->query_id}")
             ->assertSeeText("Points: {$qq->points}")
             ->assertSeeText("{$qq->qquery->description}")
+        ;
+    }
+
+    public function test_user_cannot_view_closed_query_quiz()
+    {
+        $quiz = create(Quiz::class, [
+            'closed' => (new Carbon)->subHour(),
+        ]);
+        $qq = create(QueryQuiz::class, [
+            'quiz_id' => $quiz->id,
+        ]);
+
+        $this
+            ->withExceptionHandling()
+            ->signIn()
+            ->get("/quizzes/{$qq->quiz_id}/queries/{$qq->query_id}")
+            ->assertStatus(403)
         ;
     }
 
