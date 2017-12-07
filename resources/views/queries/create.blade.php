@@ -97,6 +97,7 @@
     <script>
         $('.datatable').DataTable({
             "processing": true,
+            "bSort": false,
             "initComplete": function(settings, json) {
                 $('#loadingSpinner').hide();
                 $('.datatable').show();
