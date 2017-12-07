@@ -18,7 +18,7 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        //
+        \Illuminate\Auth\AuthenticationException::class,
     ];
 
     /**
@@ -41,6 +41,10 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+        if (in_array(get_class($exception), $this->dontReport)) {
+            return;
+        }
+
         if (App::Environment() === 'testing') {
             return;
         }
