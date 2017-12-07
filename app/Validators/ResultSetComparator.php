@@ -2,6 +2,8 @@
 
 namespace App\Validators;
 
+use StdClass;
+
 class ResultSetComparator
 {
     /**
