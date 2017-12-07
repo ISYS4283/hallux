@@ -62,6 +62,6 @@ class ResultSetComparator
     {
         $data = array_change_key_case(get_object_vars($data));
 
-        return $value === $data[strtolower($name)] ?? null;
+        return $value === ($data[strtolower($name)] ?? null);
     }
 }
