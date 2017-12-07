@@ -62,4 +62,37 @@ class ResultSetComparatorTest extends TestCase
 
         $this->assertSame($expected, $comparator->match($a, $b));
     }
+
+    public function test_compares_column_names_case_insensitively()
+    {
+        $upper = [
+            (object)[
+                'First' => 1,
+                'Second' => 2,
+                'Third' => 3,
+            ],
+            (object)[
+                'First' => 'one',
+                'Second' => 'two',
+                'Third' => 'three',
+            ],
+        ];
+
+        $lower = [
+            (object)[
+                'first' => 1,
+                'second' => 2,
+                'third' => 3,
+            ],
+            (object)[
+                'first' => 'one',
+                'second' => 'two',
+                'third' => 'three',
+            ],
+        ];
+
+        $comparator = new ResultSetComparator;
+
+        $this->assertTrue($comparator->match($upper, $lower));
+    }
 }

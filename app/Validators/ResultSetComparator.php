@@ -16,7 +16,7 @@ class ResultSetComparator
         $th = '';
         foreach ($a as $index => $row) {
             foreach ($row as $name => $column) {
-                if (array_key_exists($name, $b[$index] ?? [])) {
+                if ($this->hasColumn($name, $b[$index] ?? new StdClass)) {
                     $th .= sprintf('<th>%s</th>', e($name));
                 } else {
                     $diff = true;
@@ -31,7 +31,7 @@ class ResultSetComparator
         foreach ($a as $index => $row) {
             $td = '';
             foreach ($row as $name => $column) {
-                if ($column === ($b[$index]->$name ?? null)) {
+                if ($this->hasData($name, $column, $b[$index] ?? new StdClass)) {
                     $td .= sprintf('<td>%s</td>', e($column));
                 } else {
                     $diff = true;
@@ -47,5 +47,19 @@ class ResultSetComparator
         }
 
         return true;
+    }
+
+    protected function hasColumn(string $name, $data) : bool
+    {
+        $data = array_change_key_case(get_object_vars($data));
+
+        return array_key_exists(strtolower($name), $data);
+    }
+
+    protected function hasData(string $name, $value, $data) : bool
+    {
+        $data = array_change_key_case(get_object_vars($data));
+
+        return $value === $data[strtolower($name)] ?? null;
     }
 }
