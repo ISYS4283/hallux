@@ -33,6 +33,20 @@ class AttemptTest extends TestCase
         ]);
     }
 
+    public function test_attempt_requires_sql()
+    {
+        $qq = create(QueryQuiz::class);
+
+        $user = create(User::class);
+
+        $this
+            ->withExceptionHandling()
+            ->signIn($user)
+            ->post("/quizzes/{$qq->quiz_id}/queries/{$qq->query_id}")
+            ->assertSessionHasErrors('sql')
+        ;
+    }
+
     public function test_user_only_gets_points_for_one_success()
     {
         $user = create(User::class);

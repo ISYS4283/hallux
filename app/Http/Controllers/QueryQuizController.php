@@ -102,6 +102,10 @@ class QueryQuizController extends Controller
     {
         $this->authorize('attempt', $quiz);
 
+        $request->validate([
+            'sql' => 'required',
+        ]);
+
         $qq = $this->getQueryJoinQueryQuiz($query, $quiz->id);
         $expectedRows = $qq->data()['rows'] ?? [];
 
