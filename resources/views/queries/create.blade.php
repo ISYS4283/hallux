@@ -43,7 +43,7 @@
             <textarea id="description" name="description" rows="8" class="form-control">{{ $request->description }}</textarea>
         </div>
 
-        <div class="form-group">
+        <div class="form-group no-autoexpand">
             <input type="hidden" name="sql">
             <label for="sql">SQL:</label>
             <textarea id="sql" rows="8" class="form-control">{{ $request->sql or '-- write your query here' }}</textarea>
